@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      direction_settings: {
+        Row: {
+          id: number
+          password_hash: string | null
+          session_version: number
+        }
+        Insert: {
+          id: number
+          password_hash?: string | null
+          session_version?: number
+        }
+        Update: {
+          id?: number
+          password_hash?: string | null
+          session_version?: number
+        }
+        Relationships: []
+      }
+      football_data: {
+        Row: {
+          id: number
+          payload: Json
+          revision: number
+        }
+        Insert: {
+          id: number
+          payload: Json
+          revision?: number
+        }
+        Update: {
+          id?: number
+          payload?: Json
+          revision?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
