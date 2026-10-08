@@ -11,5 +11,6 @@
 
 ## Application architecture
 - Share navigation, avatars, player profiles and football identity in a common football UI module so statistics and team pages remain consistent.
-- Keep the imported public roster in a static data file and clearly distinguish demonstration match history; no writes go to the original site.
-- Keep team-organization demo state in React memory until persistent administration is requested, so a visual prototype never implies saved changes.
+- Store the live roster and match history in Cloud, retaining the original import only as an archive and labeling demonstration matches; no writes go to the original site.
+- Authorize every write with a server-verified encrypted shared-password session, using versioned sessions and a private password hash so visitors remain read-only and password changes revoke older access.
+- Share Cloud football data through one query-backed provider with revision checks to prevent stale edits from overwriting newer changes.

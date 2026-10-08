@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { SiteHeader, SiteFooter } from "@/components/football";
+import { FootballProvider, footballOptions } from "@/components/football-state";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -75,6 +76,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: ({ context }) => context.queryClient.ensureQueryData(footballOptions),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -121,9 +123,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <SiteHeader />
+      <FootballProvider><SiteHeader />
       <Outlet />
-      <SiteFooter />
+      <SiteFooter /></FootballProvider>
     </QueryClientProvider>
   );
 }
