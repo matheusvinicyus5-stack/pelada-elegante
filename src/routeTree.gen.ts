@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DirecaoRouteImport } from './routes/direcao'
 import { Route as TimesRouteImport } from './routes/times'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DirecaoRoute = DirecaoRouteImport.update({
+  id: '/direcao',
+  path: '/direcao',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TimesRoute = TimesRouteImport.update({
@@ -25,27 +31,31 @@ const TimesRoute = TimesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/direcao': typeof DirecaoRoute
   '/times': typeof TimesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/direcao': typeof DirecaoRoute
   '/times': typeof TimesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/direcao': typeof DirecaoRoute
   '/times': typeof TimesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/times'
+  fullPaths: '/' | '/direcao' | '/times'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/times'
-  id: '__root__' | '/' | '/times'
+  to: '/' | '/direcao' | '/times'
+  id: '__root__' | '/' | '/direcao' | '/times'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DirecaoRoute: typeof DirecaoRoute
   TimesRoute: typeof TimesRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/direcao': {
+      id: '/direcao'
+      path: '/direcao'
+      fullPath: '/direcao'
+      preLoaderRoute: typeof DirecaoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/times': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DirecaoRoute: DirecaoRoute,
   TimesRoute: TimesRoute,
 }
 export const routeTree = rootRouteImport
