@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { FootballAdminProvider } from "@/components/football-admin";
 import { SiteHeader, SiteFooter } from "@/components/football";
 import { FootballProvider, footballOptions } from "@/components/football-state";
 import appCss from "../styles.css?url";
@@ -123,9 +124,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <FootballProvider><SiteHeader />
+      <FootballProvider><FootballAdminProvider><SiteHeader />
       <Outlet />
-      <SiteFooter /></FootballProvider>
+      <SiteFooter /></FootballAdminProvider></FootballProvider>
     </QueryClientProvider>
   );
 }
