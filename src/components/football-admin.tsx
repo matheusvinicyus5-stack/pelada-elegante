@@ -844,35 +844,37 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                   </div>
                 </section>
               </div>
-
-              <div className="direction-lineups">
-                {players.map((p) => (
-                  <label key={p.id}>
-                    <span>{p.name}</span>
-                    <select
-                      aria-label={`Time de ${p.name}`}
-                      value={match.teamA.includes(p.id) ? "A" : match.teamB.includes(p.id) ? "B" : ""}
-                      onChange={(e) =>
-                        setMatch({
-                          ...match,
-                          teamA: [
-                            ...match.teamA.filter((id) => id !== p.id),
-                            ...(e.target.value === "A" ? [p.id] : []),
-                          ],
-                          teamB: [
-                            ...match.teamB.filter((id) => id !== p.id),
-                            ...(e.target.value === "B" ? [p.id] : []),
-                          ],
-                        })
-                      }
-                    >
-                      <option value="">Não escalado</option>
-                      <option value="A">Time A</option>
-                      <option value="B">Time B</option>
-                    </select>
-                  </label>
-                ))}
-              </div>
+              {matchStep === 2 && (
+              {matchStep === 2 && (
+  <div className="direction-lineups">
+    {players.map((p) => (
+      <label key={p.id}>
+        <span>{p.name}</span>
+        <select
+          aria-label={`Time de ${p.name}`}
+          value={match.teamA.includes(p.id) ? "A" : match.teamB.includes(p.id) ? "B" : ""}
+          onChange={(e) =>
+            setMatch({
+              ...match,
+              teamA: [
+                ...match.teamA.filter((id) => id !== p.id),
+                ...(e.target.value === "A" ? [p.id] : []),
+              ],
+              teamB: [
+                ...match.teamB.filter((id) => id !== p.id),
+                ...(e.target.value === "B" ? [p.id] : []),
+              ],
+            })
+          }
+        >
+          <option value="">Não escalado</option>
+          <option value="A">Time A</option>
+          <option value="B">Time B</option>
+        </select>
+      </label>
+    ))}
+  </div>
+)}
               {error && (
                 <p role="alert" className="direction-error">
                   {error}
