@@ -579,71 +579,117 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
               )}
 
               {matchStep === 4 && (
-                <div className="direction-form-grid">
-                  <label>
-                    Gols Time A
-                    <Input
-                      type="number"
-                      min={0}
-                      required
-                      value={match.scoreA}
-                      onChange={(e) => setMatch({ ...match, scoreA: Number(e.target.value) })}
-                    />
-                  </label>
+  <div className="my-4 space-y-4">
+    <section className="space-y-4 rounded-xl border p-4">
+      <h3 className="text-lg font-semibold">Revisão do confronto</h3>
 
-                  <label>
-                    Gols Time B
-                    <Input
-                      type="number"
-                      min={0}
-                      required
-                      value={match.scoreB}
-                      onChange={(e) => setMatch({ ...match, scoreB: Number(e.target.value) })}
-                    />
-                  </label>
-                </div>
-              )}
+      <p>
+        <strong>Data:</strong> {match.date || "Data não definida"}
+      </p>
 
-              <label className="flex items-center gap-2 my-3">
-                <input
-                  type="checkbox"
-                  checked={match.example ?? false}
-                  onChange={(e) => setMatch({ ...match, example: e.target.checked })}
-                />
-                Confronto de exemplo
-              </label>
-              {matchStep === 3 && (
-                <div className="my-4 space-y-5">
-                  <section className="space-y-3">
-                    <h3 className="font-semibold">Gols e assistências</h3>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <label>
+          Gols Time A
+          <Input
+            type="number"
+            min={0}
+            required
+            value={match.scoreA}
+            onChange={(e) =>
+              setMatch({ ...match, scoreA: Number(e.target.value) })
+            }
+          />
+        </label>
 
-                    {(match.goals ?? []).map((goal, index) => {
-                      const roster = goal.team === "A" ? match.teamA : match.teamB;
-                      const assistOptions = roster.filter((id) => id !== goal.scorerId);
+        <label>
+          Gols Time B
+          <Input
+            type="number"
+            min={0}
+            required
+            value={match.scoreB}
+            onChange={(e) =>
+              setMatch({ ...match, scoreB: Number(e.target.value) })
+            }
+          />
+        </label>
+      </div>
 
-                      return (
-                        <div key={`gol-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                          <strong className="self-center">
-                            Gol {index + 1} · Time {goal.team}
-                          </strong>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <section>
+          <h4 className="font-semibold">Time A</h4>
+          <ul className="list-inside list-disc">
+            {match.teamA.length === 0 && <li>Nenhum jogador escalado</li>}
+            {match.teamA.map((id) => {
+              const player = players.find((item) => item.id === id);
+              return player ? <li key={id}>{player.name}</li> : null;
+            })}
+          </ul>
+        </section>
 
-                          <label>
-                            Autor do gol
-                            <select
-                              className="w-full rounded-md border bg-background p-2"
-                              value={goal.scorerId}
-                              onChange={(e) => {
-                                const scorerId = Number(e.target.value);
-                                setMatch({
-                                  ...match,
-                                  goals: (match.goals ?? []).map((item, itemIndex) => {
-                                    if (itemIndex !== index) return item;
-                                    const updated = { ...item, scorerId };
-                                    if (updated.assistId === scorerId) delete updated.assistId;
-                                    return updated;
-                                  }),
-                                });
-                              }}
+        <section>
+          <h4 className="font-semibold">Time B</h4>
+          <ul className="list-inside list-disc">
+            {match.teamB.length === 0 && <li>Nenhum jogador escalado</li>}
+            {match.teamB.map((id) => {
+              const player = players.find((item) => item.id === id);
+              return player ? <li key={id}>{player.name}</li> : null;
+            })}
+          </ul>
+        </section>
+      </div>
+
+      <section>
+        <h4 className="font-semibold">Gols e assistências</h4>
+        {(match.goals ?? []).length === 0 ? (
+          <p>Nenhum gol registrado nos eventos.</p>
+        ) : (
+          <ul className="list-inside list-disc">
+            {(match.goals ?? []).map((goal, index) => {
+              const scorer = players.find(
+                (player) => player.id === goal.scorerId,
+              );
+              const assister = goal.assistId
+                ? players.find((player) => player.id === goal.assistId)
+                : undefined;
+
+              return (
+                <li key={`review-goal-${index}`}>
+                  Time {goal.team}: {scorer?.name ?? "Atleta não encontrado"}
+                  {assister ? ` · assistência: ${assister.name}` : ""}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+
+      <section>
+        <h4 className="font-semibold">Cartões</h4>
+        {(match.cards ?? []).length === 0 ? (
+          <p>Nenhum cartão registrado.</p>
+        ) : (
+          <ul className="list-inside list-disc">
+            {(match.cards ?? []).map((card, index) => {
+              const player = players.find(
+                (item) => item.id === card.playerId,
+              );
+              const cardName =
+                card.card === "yellow" ? "Amarelo" : "Vermelho";
+
+              return (
+                <li key={`review-card-${index}`}>
+                  Time {card.team}: {player?.name ?? "Atleta não encontrado"} ·{" "}
+                  {cardName}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+    </section>
+  </div>
+)}
                             >
                               {roster.map((id) => {
                                 const player = players.find((item) => item.id === id);
@@ -881,7 +927,12 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                   {error}
                 </p>
               )}
-              <Button disabled={busy} className="w-full mt-4">
+              {matchStep === 4 && (
+  <Button type="submit" disabled={busy} className="w-full mt-4">
+    <Save size={16} />
+    Salvar confronto
+  </Button>
+)}
                 <Save size={16} />
                 Salvar confronto
               </Button>
