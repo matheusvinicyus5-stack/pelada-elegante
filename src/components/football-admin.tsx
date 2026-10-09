@@ -543,6 +543,239 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 />
                 Confronto de exemplo
               </label>
+              <div className="my-4 space-y-5">
+                <section className="space-y-3">
+                  <h3 className="font-semibold">Gols e assistências</h3>
+
+                  {(match.goals ?? []).map((goal, index) => {
+                    const roster = goal.team === "A" ? match.teamA : match.teamB;
+                    const assistOptions = roster.filter((id) => id !== goal.scorerId);
+
+                    return (
+                      <div key={`gol-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                        <strong className="self-center">
+                          Gol {index + 1} · Time {goal.team}
+                        </strong>
+
+                        <label>
+                          Autor do gol
+                          <select
+                            className="w-full rounded-md border bg-background p-2"
+                            value={goal.scorerId}
+                            onChange={(e) => {
+                              const scorerId = Number(e.target.value);
+                              setMatch({
+                                ...match,
+                                goals: (match.goals ?? []).map((item, itemIndex) => {
+                                  if (itemIndex !== index) return item;
+                                  const updated = { ...item, scorerId };
+                                  if (updated.assistId === scorerId) delete updated.assistId;
+                                  return updated;
+                                }),
+                              });
+                            }}
+                          >
+                            {roster.map((id) => {
+                              const player = players.find((item) => item.id === id);
+                              return player ? (
+                                <option key={id} value={id}>
+                                  {player.name}
+                                </option>
+                              ) : null;
+                            })}
+                          </select>
+                        </label>
+
+                        <label>
+                          Assistência
+                          <select
+                            className="w-full rounded-md border bg-background p-2"
+                            value={goal.assistId ?? ""}
+                            onChange={(e) => {
+                              const assistId = e.target.value ? Number(e.target.value) : undefined;
+                              setMatch({
+                                ...match,
+                                goals: (match.goals ?? []).map((item, itemIndex) => {
+                                  if (itemIndex !== index) return item;
+                                  const updated = { ...item };
+                                  if (assistId === undefined) delete updated.assistId;
+                                  else updated.assistId = assistId;
+                                  return updated;
+                                }),
+                              });
+                            }}
+                          >
+                            <option value="">Sem assistência</option>
+                            {assistOptions.map((id) => {
+                              const player = players.find((item) => item.id === id);
+                              return player ? (
+                                <option key={id} value={id}>
+                                  {player.name}
+                                </option>
+                              ) : null;
+                            })}
+                          </select>
+                        </label>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() =>
+                            setMatch({
+                              ...match,
+                              goals: (match.goals ?? []).filter((_, itemIndex) => itemIndex !== index),
+                            })
+                          }
+                        >
+                          Remover gol
+                        </Button>
+                      </div>
+                    );
+                  })}
+
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!match.teamA.length}
+                      onClick={() => {
+                        const scorerId = match.teamA[0];
+                        if (scorerId === undefined) return;
+                        setMatch({
+                          ...match,
+                          goals: [...(match.goals ?? []), { team: "A", scorerId }],
+                        });
+                      }}
+                    >
+                      Adicionar gol · Time A
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!match.teamB.length}
+                      onClick={() => {
+                        const scorerId = match.teamB[0];
+                        if (scorerId === undefined) return;
+                        setMatch({
+                          ...match,
+                          goals: [...(match.goals ?? []), { team: "B", scorerId }],
+                        });
+                      }}
+                    >
+                      Adicionar gol · Time B
+                    </Button>
+                  </div>
+                </section>
+
+                <section className="space-y-3">
+                  <h3 className="font-semibold">Cartões</h3>
+
+                  {(match.cards ?? []).map((card, index) => {
+                    const roster = card.team === "A" ? match.teamA : match.teamB;
+
+                    return (
+                      <div key={`cartao-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                        <strong className="self-center">Time {card.team}</strong>
+
+                        <label>
+                          Jogador
+                          <select
+                            className="w-full rounded-md border bg-background p-2"
+                            value={card.playerId}
+                            onChange={(e) => {
+                              const playerId = Number(e.target.value);
+                              setMatch({
+                                ...match,
+                                cards: (match.cards ?? []).map((item, itemIndex) =>
+                                  itemIndex === index ? { ...item, playerId } : item,
+                                ),
+                              });
+                            }}
+                          >
+                            {roster.map((id) => {
+                              const player = players.find((item) => item.id === id);
+                              return player ? (
+                                <option key={id} value={id}>
+                                  {player.name}
+                                </option>
+                              ) : null;
+                            })}
+                          </select>
+                        </label>
+
+                        <label>
+                          Cartão
+                          <select
+                            className="w-full rounded-md border bg-background p-2"
+                            value={card.card}
+                            onChange={(e) => {
+                              const cardType = e.target.value as "yellow" | "red";
+                              setMatch({
+                                ...match,
+                                cards: (match.cards ?? []).map((item, itemIndex) =>
+                                  itemIndex === index ? { ...item, card: cardType } : item,
+                                ),
+                              });
+                            }}
+                          >
+                            <option value="yellow">Amarelo</option>
+                            <option value="red">Vermelho</option>
+                          </select>
+                        </label>
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() =>
+                            setMatch({
+                              ...match,
+                              cards: (match.cards ?? []).filter((_, itemIndex) => itemIndex !== index),
+                            })
+                          }
+                        >
+                          Remover cartão
+                        </Button>
+                      </div>
+                    );
+                  })}
+
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!match.teamA.length}
+                      onClick={() => {
+                        const playerId = match.teamA[0];
+                        if (playerId === undefined) return;
+                        setMatch({
+                          ...match,
+                          cards: [...(match.cards ?? []), { team: "A", playerId, card: "yellow" }],
+                        });
+                      }}
+                    >
+                      Adicionar cartão · Time A
+                    </Button>
+
+                    <Button
+                      type="button"
+                      variant="outline"
+                      disabled={!match.teamB.length}
+                      onClick={() => {
+                        const playerId = match.teamB[0];
+                        if (playerId === undefined) return;
+                        setMatch({
+                          ...match,
+                          cards: [...(match.cards ?? []), { team: "B", playerId, card: "yellow" }],
+                        });
+                      }}
+                    >
+                      Adicionar cartão · Time B
+                    </Button>
+                  </div>
+                </section>
+              </div>
+
               <div className="direction-lineups">
                 {players.map((p) => (
                   <label key={p.id}>
