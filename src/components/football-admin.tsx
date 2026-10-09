@@ -140,7 +140,13 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
     editMatch: (m) => {
       if (active) {
         setError("");
-        setMatch({ ...m, teamA: [...m.teamA], teamB: [...m.teamB] });
+        setMatch({
+          ...m,
+          teamA: [...m.teamA],
+          teamB: [...m.teamB],
+          goals: [...(m.goals ?? [])],
+          cards: [...(m.cards ?? [])],
+        });
       }
     },
     addMatch: () => {
@@ -154,6 +160,8 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
           scoreB: 0,
           teamA: [],
           teamB: [],
+          goals: [],
+          cards: [],
           example: false,
         });
       }
