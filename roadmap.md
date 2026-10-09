@@ -5,6 +5,6 @@
 - [x] Proteger Modo Direção por senha e permitir troca de senha.
 - [x] Salvar jogadores e confrontos com edição exclusiva da Direção.
 - [x] Verificar bloqueios, edição e persistência.
-- [ ] Substituir a aba Direção por login e menu administrativo.
-- [ ] Disponibilizar edição de jogadores em Estatísticas e gestão de confrontos em Times.
-- [ ] Verificar login, edição nas abas e saída.
+- [x] Substituir a aba Direção por login e menu administrativo.
+- [x] Disponibilizar edição de jogadores em Estatísticas e gestão de confrontos em Times.
+- [x] Verificar login, edição nas abas e saída.
