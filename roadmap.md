@@ -8,3 +8,6 @@
 - [x] Substituir a aba Direção por login e menu administrativo.
 - [x] Disponibilizar edição de jogadores em Estatísticas e gestão de confrontos em Times.
 - [x] Verificar login, edição nas abas e saída.
+- [ ] Mostrar frequência em cinco partes com os cinco últimos sábados e estados de presença.
+- [ ] Permitir à Direção registrar e corrigir presenças preservando a base importada.
+- [ ] Testar cálculo, salvamento e apresentação da frequência.

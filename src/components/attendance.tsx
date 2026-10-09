@@ -1,0 +1,17 @@
+import { useEffect, useState } from 'react';
+import { Check, X, Minus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { type Player } from '@/lib/football';
+import { attendanceValue, isSaturday, recentSaturdays, recordAttendance, shortDate } from '@/lib/attendance';
+import { cn } from '@/lib/utils';
+
+function useSaturdays(){const [today,setToday]=useState('');useEffect(()=>{const update=()=>setToday(new Intl.DateTimeFormat('en-CA',{timeZone:'America/Maceio',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()));update();const timer=setInterval(update,60000);return()=>clearInterval(timer);},[]);return {today,dates:today?recentSaturdays(today):[]};}
+export function AttendanceDisplay({player}:{player:Player}) {
+ const {dates}=useSaturdays();
+ return <div className="attendance-display"><div className="attendance-top"><div className="attendance-segments" role="meter" aria-label="Frequência" aria-valuenow={player.attendance} aria-valuemin={0} aria-valuemax={100}>{Array.from({length:5},(_,i)=><span key={i} className={cn(player.attendance>=(i+1)*20&&'filled')}/>)}</div><strong>{player.attendance}%</strong></div><div className="attendance-dates">{Array.from({length:5},(_,i)=>{const date=dates[i];const status=player.attendanceRecords?.find(record=>record.date===date)?.status;const label=status==='present'?'Presença':status==='absent'?'Falta':'Sem registro';return <span key={date??i} className={cn('attendance-day',status)} title={`${date??'—'} · ${label}`} aria-label={`${date?shortDate(date):'—'}: ${label}`}><small>{date?shortDate(date):'—'}</small>{status==='present'?<Check size={11}/>:status==='absent'?<X size={11}/>:<Minus size={11}/>}</span>;})}</div></div>;
+}
+export function AttendanceEditor({player,onChange}:{player:Player;onChange:(player:Player)=>void}) {
+ const {today,dates}=useSaturdays();const [chosen,setChosen]=useState('');const date=chosen||dates[4]||'';const status=player.attendanceRecords?.find(record=>record.date===date)?.status;const valid=isSaturday(date)&&date<=today;
+ return <section className="attendance-editor col-span-2"><div className="attendance-editor-heading"><h3>Presença em campo</h3><strong>{player.attendance}%</strong></div><label>Frequência inicial (%)<Input type="number" min={0} max={100} required value={player.attendanceBase??player.attendance} onChange={e=>{const base=Number(e.target.value);onChange({...player,attendanceBase:base,attendance:attendanceValue(base,player.attendanceRecords??[])});}}/></label><AttendanceDisplay player={player}/><label>Sábado<Input type="date" max={today||undefined} value={date} onChange={e=>setChosen(e.target.value)}/></label>{date&&!valid&&<p className="direction-error">Escolha um sábado que já chegou.</p>}<div className="attendance-status-controls">{([{value:'present',label:'Presença',Icon:Check},{value:'absent',label:'Falta',Icon:X},{value:null,label:'Sem registro',Icon:Minus}] as const).map(({value,label,Icon})=><Button type="button" key={label} size="sm" variant={status===value||(!status&&value===null)?'secondary':'outline'} aria-pressed={status===value||(!status&&value===null)} disabled={!valid} onClick={()=>onChange(recordAttendance(player,date,value))}><Icon size={14}/>{label}</Button>)}</div><p className="attendance-rule">Presença +20% · Falta −20% · Limite de 100%</p></section>;
+}

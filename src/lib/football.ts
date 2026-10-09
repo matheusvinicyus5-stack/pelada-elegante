@@ -1,5 +1,6 @@
 import playerData from "./players.json";
-export type Player = { id: number; number?: number | undefined; name: string; position: string; points: number; goals: number; assists: number; yellow: number; red: number; blue: number; attendance: number; photo?: string | undefined };
+import type { AttendanceRecord } from './attendance';
+export type Player = { id: number; number?: number | undefined; name: string; position: string; points: number; goals: number; assists: number; yellow: number; red: number; blue: number; attendance: number; attendanceBase?: number | undefined; attendanceRecords?: AttendanceRecord[] | undefined; photo?: string | undefined };
 export const players: Player[] = playerData;
 export const positionNames: Record<string,string> = {MC:'Meio-campo',AT:'Atacante',G:'Goleiro',ZG:'Zagueiro',DF:'Defensor',LAT:'Lateral'};
 export type Match = { id: number; date: string; short: string; scoreA: number; scoreB: number; teamA: number[]; teamB: number[]; example?: boolean | undefined };
