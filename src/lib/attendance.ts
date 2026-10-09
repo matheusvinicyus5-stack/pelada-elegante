@@ -12,7 +12,7 @@ export function recentSaturdays(today: string): string[] {
 export function attendanceValue(base: number, records: AttendanceRecord[]) {
  return [...records].sort((a,b)=>a.date.localeCompare(b.date)).reduce((value,record)=>Math.max(0,Math.min(100,value+(record.status==='present'?20:-20))),base);
 }
-export function recordAttendance<T extends AttendancePlayer>(player: T, date: string, status: AttendanceRecord['status'] | null): T {
+export function recordAttendance<T extends AttendancePlayer>(player: T, date: string, status: AttendanceRecord['status'] | null): T & AttendancePlayer {
  const base=player.attendanceBase??player.attendance;
  const records=[...(player.attendanceRecords??[]).filter(record=>record.date!==date),...(status?[{date,status}]:[])].sort((a,b)=>a.date.localeCompare(b.date));
  return {...player,attendanceBase:base,attendanceRecords:records,attendance:attendanceValue(base,records)};
