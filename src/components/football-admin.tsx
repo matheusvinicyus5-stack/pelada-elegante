@@ -136,6 +136,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
   const [player, setPlayer] = useState<Player | null>(null);
   const [match, setMatch] = useState<Match | null>(null);
   const [matchStep, setMatchStep] = useState(1);
+  const [matchStep, setMatchStep] = useState(1);
   const [deleting, setDeleting] = useState<{ type: "player" | "match"; id: number; name: string } | null>(null);
   async function run(action: () => Promise<void>) {
     setError("");
@@ -351,20 +352,6 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 });
               }}
             >
-              <div className="grid grid-cols-4 gap-2 mb-4">
-                {["Data", "Times", "Eventos", "Revisão"].map((label, index) => (
-                  <Button
-                    key={label}
-                    type="button"
-                    variant={matchStep === index + 1 ? "default" : "outline"}
-                    aria-current={matchStep === index + 1 ? "step" : undefined}
-                    onClick={() => setMatchStep(index + 1)}
-                  >
-                    {index + 1}. {label}
-                  </Button>
-                ))}
-              </div>
-
               <div className="direction-form-grid">
                 <label className="col-span-2">
                   Nome
@@ -556,6 +543,19 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 });
               }}
             >
+              <div className="grid grid-cols-2 gap-2 mb-4 sm:grid-cols-4">
+                {["Data", "Times", "Eventos", "Revisão"].map((label, index) => (
+                  <Button
+                    key={label}
+                    type="button"
+                    variant={matchStep === index + 1 ? "default" : "outline"}
+                    onClick={() => setMatchStep(index + 1)}
+                  >
+                    {index + 1}. {label}
+                  </Button>
+                ))}
+              </div>
+
               <div className="direction-form-grid">
                 <label>
                   Data do jogo
