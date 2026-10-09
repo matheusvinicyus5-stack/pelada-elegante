@@ -33,6 +33,50 @@ const fields = [
   ["red", "Vermelhos"],
   ["blue", "Azuis"],
 ] as const;
+const fullMonthNames = [
+  "janeiro",
+  "fevereiro",
+  "março",
+  "abril",
+  "maio",
+  "junho",
+  "julho",
+  "agosto",
+  "setembro",
+  "outubro",
+  "novembro",
+  "dezembro",
+];
+
+const shortMonthNames = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
+
+function dateToInput(value: string) {
+  const parts = value.match(/^(\d{1,2}) de ([a-zA-ZÀ-ÿ]+) de (\d{4})$/);
+  if (!parts) return "";
+
+  const month = fullMonthNames.indexOf(parts[2].toLowerCase()) + 1;
+  if (month < 1) return "";
+
+  return `${parts[3]}-${String(month).padStart(2, "0")}-${String(Number(parts[1])).padStart(2, "0")}`;
+}
+
+function formatMatchDate(value: string) {
+  if (!value) return { date: "", short: "" };
+
+  const [yearText, monthText, dayText] = value.split("-");
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+
+  if (!year || month < 1 || month > 12 || day < 1 || day > 31) {
+    return { date: "", short: "" };
+  }
+
+  return {
+    date: `${String(day).padStart(2, "0")} de ${fullMonthNames[month - 1]} de ${year}`,
+    short: `${String(day).padStart(2, "0")} ${shortMonthNames[month - 1]}`,
+  };
+}
 type AdminActions = {
   editPlayer: (p: Player) => void;
   addPlayer: () => void;
@@ -497,23 +541,23 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
             >
               <div className="direction-form-grid">
                 <label>
-                  Data completa
+                  Data do jogo
                   <Input
+                    type="date"
                     required
-                    placeholder="10 de outubro de 2026"
-                    value={match.date}
-                    onChange={(e) => setMatch({ ...match, date: e.target.value })}
+                    value={dateToInput(match.date)}
+                    onChange={(e) => {
+                      const formatted = formatMatchDate(e.target.value);
+                      setMatch({ ...match, date: formatted.date, short: formatted.short });
+                    }}
                   />
                 </label>
+
                 <label>
-                  Data curta
-                  <Input
-                    required
-                    placeholder="10 OUT"
-                    value={match.short}
-                    onChange={(e) => setMatch({ ...match, short: e.target.value })}
-                  />
+                  Data curta (automática)
+                  <Input value={match.short} readOnly placeholder="Escolha a data do jogo" />
                 </label>
+
                 <label>
                   Gols Time A
                   <Input
