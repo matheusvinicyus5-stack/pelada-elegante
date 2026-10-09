@@ -933,9 +933,6 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
     Salvar confronto
   </Button>
 )}
-                <Save size={16} />
-                Salvar confronto
-              </Button>
             </form>
           )}
         </DialogContent>
