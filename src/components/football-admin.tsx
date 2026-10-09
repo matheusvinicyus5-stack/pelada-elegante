@@ -556,46 +556,54 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 ))}
               </div>
 
-              <div className="direction-form-grid">
-                <label>
-                  Data do jogo
-                  <Input
-                    type="date"
-                    required
-                    value={dateToInput(match.date)}
-                    onChange={(e) => {
-                      const formatted = formatMatchDate(e.target.value);
-                      setMatch({ ...match, date: formatted.date, short: formatted.short });
-                    }}
-                  />
-                </label>
+              {matchStep === 1 && (
+                <div className="direction-form-grid">
+                  <label>
+                    Data do jogo
+                    <Input
+                      type="date"
+                      required
+                      value={dateToInput(match.date)}
+                      onChange={(e) => {
+                        const formatted = formatMatchDate(e.target.value);
+                        setMatch({ ...match, date: formatted.date, short: formatted.short });
+                      }}
+                    />
+                  </label>
 
-                <label>
-                  Data curta (automática)
-                  <Input value={match.short} readOnly placeholder="Escolha a data do jogo" />
-                </label>
+                  <label>
+                    Data curta (automática)
+                    <Input value={match.short} readOnly placeholder="Escolha a data do jogo" />
+                  </label>
+                </div>
+              )}
 
-                <label>
-                  Gols Time A
-                  <Input
-                    type="number"
-                    min={0}
-                    required
-                    value={match.scoreA}
-                    onChange={(e) => setMatch({ ...match, scoreA: Number(e.target.value) })}
-                  />
-                </label>
-                <label>
-                  Gols Time B
-                  <Input
-                    type="number"
-                    min={0}
-                    required
-                    value={match.scoreB}
-                    onChange={(e) => setMatch({ ...match, scoreB: Number(e.target.value) })}
-                  />
-                </label>
-              </div>
+              {matchStep === 4 && (
+                <div className="direction-form-grid">
+                  <label>
+                    Gols Time A
+                    <Input
+                      type="number"
+                      min={0}
+                      required
+                      value={match.scoreA}
+                      onChange={(e) => setMatch({ ...match, scoreA: Number(e.target.value) })}
+                    />
+                  </label>
+
+                  <label>
+                    Gols Time B
+                    <Input
+                      type="number"
+                      min={0}
+                      required
+                      value={match.scoreB}
+                      onChange={(e) => setMatch({ ...match, scoreB: Number(e.target.value) })}
+                    />
+                  </label>
+                </div>
+              )}
+
               <label className="flex items-center gap-2 my-3">
                 <input
                   type="checkbox"
