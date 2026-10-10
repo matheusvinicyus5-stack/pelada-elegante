@@ -167,25 +167,31 @@ function Teams() {
           {(["goals", "yellow", "red"] as const).map((kind) => {
             const hasEvents = kind === "goals" ? (match.goals ?? []).length > 0 : (match.cards ?? []).some((card) => card.card === kind);
             if (!hasEvents) return null;
-            return <div className="result-event-row" key={kind}>
+            const label = kind === "goals" ? "Gols" : kind === "yellow" ? "Cartões amarelos" : "Cartões vermelhos";
+            return <section className="result-event-group" key={kind} aria-label={label}>
+              <h3>{label}</h3>
+              <div className="result-event-row">
               {(["A", "B"] as const).map((team) => {
                 const roster = kind === "goals"
                   ? [...new Set((match.goals ?? []).filter((goal) => goal.team === team).map((goal) => goal.scorerId))]
                   : [...new Set((match.cards ?? []).filter((card) => card.team === team && card.card === kind).map((card) => card.playerId))];
                 return <div key={team} className={cn("result-event-names", team === "B" && "result-event-names-b")}>
+                  <h4>Time {team}</h4>
+                  {roster.length === 0 && <p className="result-event-empty">Nenhum registro</p>}
                   {roster.map((id) => {
                     const name = players.find((player) => player.id === id)?.name ?? "Jogador não encontrado";
                     const goals = (match.goals ?? []).filter((goal) => goal.team === team && goal.scorerId === id);
                     const count = kind === "goals" ? goals.length : (match.cards ?? []).filter((card) => card.team === team && card.card === kind && card.playerId === id).length;
                     const assists = [...new Set(goals.flatMap((goal) => goal.assistId === undefined ? [] : [goal.assistId]))].map((assistId) => players.find((player) => player.id === assistId)?.name).filter(Boolean);
-                    return <div key={id}><span>{name}{count > 1 ? ` (${count})` : ""}</span>{kind === "goals" && assists.length > 0 && <small>Assistência: {assists.join(", ")}</small>}</div>;
+                    return <div className="result-player-event" key={id}>
+                      <span className="result-event-icon" aria-hidden="true">{kind === "goals" ? <CircleDot size={17} /> : <i className={cn("discipline-card", kind)} />}</span>
+                      <div><span>{name}</span><small>{count} {kind === "goals" ? count === 1 ? "gol" : "gols" : count === 1 ? "cartão" : "cartões"}</small>{kind === "goals" && assists.length > 0 && <small>Assistência: {assists.join(", ")}</small>}</div>
+                    </div>;
                   })}
                 </div>;
               })}
-              <span className="result-event-icon" role="img" aria-label={kind === "goals" ? "Gols" : kind === "yellow" ? "Cartões amarelos" : "Cartões vermelhos"}>
-                {kind === "goals" ? <CircleDot size={19} /> : <i className={cn("discipline-card", kind)} />}
-              </span>
-            </div>;
+              </div>
+            </section>;
           })}
           {(match.goals ?? []).length === 0 && (match.cards ?? []).length === 0 && <p className="result-no-events">Nenhum evento registrado.</p>}
         </div>

@@ -1109,12 +1109,17 @@ h1 > span {
 .result-score { font-size: 60px; font-weight: 400; text-align: center; line-height: 1; }
 .result-status { text-align: center; color: var(--muted-foreground); font-size: 15px; display: grid; gap: 6px; }
 .result-events { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 22px; }
-.result-event-row { display: grid; grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); gap: 18px; margin-bottom: 22px; align-items: start; }
-.result-event-row:last-child { margin-bottom: 0; }
-.result-event-names { grid-column: 1; grid-row: 1; color: var(--muted-foreground); display: grid; gap: 12px; overflow-wrap: anywhere; font-size: 15px; }
-.result-event-names-b { grid-column: 3; text-align: right; }
-.result-event-names small { display: block; font-size: 11px; margin-top: 4px; }
-.result-event-icon { grid-column: 2; grid-row: 1; display: flex; justify-content: center; padding-top: 3px; }
+.result-event-group + .result-event-group { border-top: 1px solid var(--border); margin-top: 22px; padding-top: 20px; }
+.result-event-group > h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.result-event-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+.result-event-names { display: grid; gap: 12px; overflow-wrap: anywhere; font-size: 15px; min-width: 0; }
+.result-event-names-b { border-left: 1px solid var(--border); padding-left: 24px; }
+.result-event-names h4 { font-size: 11px; font-weight: 500; color: var(--muted-foreground); }
+.result-player-event { display: flex; gap: 10px; align-items: flex-start; }
+.result-player-event > div { min-width: 0; }
+.result-event-names small { display: block; color: var(--muted-foreground); font-size: 11px; margin-top: 4px; }
+.result-event-empty { color: var(--muted-foreground); font-size: 12px; }
+.result-event-icon { display: flex; width: 18px; flex-shrink: 0; justify-content: center; padding-top: 3px; }
 .result-event-icon .discipline-card { width: 12px; height: 17px; transform: rotate(12deg); border-radius: 2px; }
 .result-no-events { text-align: center; color: var(--muted-foreground); font-size: 12px; }
 @media (max-width: 760px) {
@@ -1124,7 +1129,8 @@ h1 > span {
   .result-team h2 { font-size: 17px; }
   .result-score { font-size: 36px; }
   .result-status { font-size: 11px; }
-  .result-event-row { gap: 10px; grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr); }
+  .result-event-row { gap: 16px; }
+  .result-event-names-b { padding-left: 16px; }
   .result-event-names { font-size: 13px; }
 }
 .teams-date-bar {
