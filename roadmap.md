@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Adaptar a apresentação de Times à referência, com placar e eventos por lado sem minutagem.
 - [x] Construir estatísticas com filtros, classificação e perfil dos atletas.
 - [x] Construir Times com histórico de sábados e escalações de demonstração.
 - [x] Verificar navegação, interações e apresentação.

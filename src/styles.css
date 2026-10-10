@@ -1091,6 +1091,42 @@ h1 > span {
   background: var(--primary);
   border-radius: 3px;
 }
+.match-result {
+  padding: 32px 0;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+}
+.match-result-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(40px, 0.6fr) minmax(90px, 1fr) minmax(40px, 0.6fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.result-team { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-width: 0; }
+.result-team-b { align-items: flex-end; text-align: right; }
+.result-team .team-shield { width: 60px; height: 68px; }
+.result-team h2 { font-size: 26px; font-weight: 500; }
+.result-score { font-size: 60px; font-weight: 400; text-align: center; line-height: 1; }
+.result-status { text-align: center; color: var(--muted-foreground); font-size: 15px; display: grid; gap: 6px; }
+.result-events { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 22px; }
+.result-event-row { display: grid; grid-template-columns: minmax(0, 1fr) 32px minmax(0, 1fr); gap: 18px; margin-bottom: 22px; align-items: start; }
+.result-event-row:last-child { margin-bottom: 0; }
+.result-event-names { grid-column: 1; grid-row: 1; color: var(--muted-foreground); display: grid; gap: 12px; overflow-wrap: anywhere; font-size: 15px; }
+.result-event-names-b { grid-column: 3; text-align: right; }
+.result-event-names small { display: block; font-size: 11px; margin-top: 4px; }
+.result-event-icon { grid-column: 2; grid-row: 1; display: flex; justify-content: center; padding-top: 3px; }
+.result-event-icon .discipline-card { width: 12px; height: 17px; transform: rotate(12deg); border-radius: 2px; }
+.result-no-events { text-align: center; color: var(--muted-foreground); font-size: 12px; }
+@media (max-width: 760px) {
+  .match-result { padding: 24px 0; }
+  .match-result-header { gap: 5px; grid-template-columns: minmax(0, 1fr) 38px 84px 38px minmax(0, 1fr); }
+  .result-team .team-shield { width: 42px; height: 48px; }
+  .result-team h2 { font-size: 17px; }
+  .result-score { font-size: 36px; }
+  .result-status { font-size: 11px; }
+  .result-event-row { gap: 10px; grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr); }
+  .result-event-names { font-size: 13px; }
+}
 .teams-date-bar {
   display: flex;
   justify-content: space-between;
