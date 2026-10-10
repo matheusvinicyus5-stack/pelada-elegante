@@ -52,7 +52,7 @@ const shortMonthNames = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO",
 
 function dateToInput(value: string) {
   const parts = value.match(/^(\d{1,2}) de ([a-zA-ZÀ-ÿ]+) de (\d{4})$/);
-  if (!parts) return "";
+  if (!parts?.[2]) return "";
 
   const month = fullMonthNames.indexOf(parts[2].toLowerCase()) + 1;
   if (month < 1) return "";

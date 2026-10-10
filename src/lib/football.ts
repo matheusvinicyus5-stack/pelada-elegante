@@ -27,7 +27,7 @@ export const positionNames: Record<string, string> = {
 };
 export type MatchGoal = {
   scorerId: number;
-  assistId?: number;
+  assistId?: number | undefined;
   team: "A" | "B";
 };
 
