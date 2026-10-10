@@ -10,7 +10,6 @@ import {
   Plus,
   Pencil,
   Trash2,
-  CircleDot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PlayerAvatar, PlayerDialog, ShieldBadge } from "@/components/football";
@@ -164,30 +163,31 @@ function Teams() {
         </div>
         </div>
         <div className="result-events">
-          {(["goals", "yellow", "red"] as const).map((kind) => {
-            const hasEvents = kind === "goals" ? (match.goals ?? []).length > 0 : (match.cards ?? []).some((card) => card.card === kind);
+          {(["goals", "cards"] as const).map((kind) => {
+            const hasEvents = kind === "goals" ? (match.goals ?? []).length > 0 : (match.cards ?? []).length > 0;
             if (!hasEvents) return null;
-            const label = kind === "goals" ? "Gols" : kind === "yellow" ? "Cartões amarelos" : "Cartões vermelhos";
+            const label = kind === "goals" ? "Gols" : "Cartões";
             return <section className="result-event-group" key={kind} aria-label={label}>
               <h3>{label}</h3>
               <div className="result-event-row">
               {(["A", "B"] as const).map((team) => {
-                const roster = kind === "goals"
-                  ? [...new Set((match.goals ?? []).filter((goal) => goal.team === team).map((goal) => goal.scorerId))]
-                  : [...new Set((match.cards ?? []).filter((card) => card.team === team && card.card === kind).map((card) => card.playerId))];
+                const goals = (match.goals ?? []).filter((goal) => goal.team === team);
+                const cards = (match.cards ?? []).filter((card) => card.team === team);
                 return <div key={team} className={cn("result-event-names", team === "B" && "result-event-names-b")}>
                   <h4>Time {team}</h4>
-                  {roster.length === 0 && <p className="result-event-empty">Nenhum registro</p>}
-                  {roster.map((id) => {
-                    const name = players.find((player) => player.id === id)?.name ?? "Jogador não encontrado";
-                    const goals = (match.goals ?? []).filter((goal) => goal.team === team && goal.scorerId === id);
-                    const count = kind === "goals" ? goals.length : (match.cards ?? []).filter((card) => card.team === team && card.card === kind && card.playerId === id).length;
-                    const assists = [...new Set(goals.flatMap((goal) => goal.assistId === undefined ? [] : [goal.assistId]))].map((assistId) => players.find((player) => player.id === assistId)?.name).filter(Boolean);
-                    return <div className="result-player-event" key={id}>
-                      <span className="result-event-icon" aria-hidden="true">{kind === "goals" ? <CircleDot size={17} /> : <i className={cn("discipline-card", kind)} />}</span>
-                      <div><span>{name}</span><small>{count} {kind === "goals" ? count === 1 ? "gol" : "gols" : count === 1 ? "cartão" : "cartões"}</small>{kind === "goals" && assists.length > 0 && <small>Assistência: {assists.join(", ")}</small>}</div>
+                  {(kind === "goals" ? goals.length === 0 : cards.length === 0) && <p className="result-event-empty">Nenhum registro</p>}
+                  {kind === "goals" ? goals.map((goal, index) => {
+                    const scorer = players.find((player) => player.id === goal.scorerId)?.name ?? "Jogador não encontrado";
+                    const assist = goal.assistId === undefined ? undefined : players.find((player) => player.id === goal.assistId)?.name;
+                    return <div className="result-goal-event" key={index}>
+                      <span className="result-goal-scorer">{scorer}</span>
+                      <span role="img" aria-label="Gol">⚽</span>
+                      {assist && <span className="result-goal-assist"><small>Assistência</small>{assist}</span>}
                     </div>;
-                  })}
+                  }) : cards.map((card, index) => <div className="result-player-event" key={index}>
+                    <span>{players.find((player) => player.id === card.playerId)?.name ?? "Jogador não encontrado"}</span>
+                    <span className="result-event-icon" role="img" aria-label={`Cartão ${card.card === "yellow" ? "amarelo" : card.card === "red" ? "vermelho" : "azul"}`}><i className={cn("discipline-card", card.card)} /></span>
+                  </div>)}
                 </div>;
               })}
               </div>

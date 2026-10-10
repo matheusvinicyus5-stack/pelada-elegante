@@ -675,7 +675,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 (item) => item.id === card.playerId,
               );
               const cardName =
-                card.card === "yellow" ? "Amarelo" : "Vermelho";
+                card.card === "yellow" ? "Amarelo" : card.card === "red" ? "Vermelho" : "Azul";
 
               return (
                 <li key={`review-card-${index}`}>
@@ -854,7 +854,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                               className="w-full rounded-md border bg-background p-2"
                               value={card.card}
                               onChange={(e) => {
-                                const cardType = e.target.value as "yellow" | "red";
+                                const cardType = e.target.value as "yellow" | "red" | "blue";
                                 setMatch({
                                   ...match,
                                   cards: (match.cards ?? []).map((item, itemIndex) =>
@@ -865,6 +865,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                             >
                               <option value="yellow">Amarelo</option>
                               <option value="red">Vermelho</option>
+                              <option value="blue">Azul</option>
                             </select>
                           </label>
 

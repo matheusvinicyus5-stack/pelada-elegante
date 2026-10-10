@@ -69,7 +69,7 @@ export const matchSchema = z.object({
       z.object({
         playerId: count,
         team: z.enum(["A", "B"]),
-        card: z.enum(["yellow", "red"]),
+        card: z.enum(["yellow", "red", "blue"]),
       }),
     )
     .default([]),
