@@ -1118,8 +1118,8 @@ h1 > span {
 .result-player-event { display: flex; gap: 10px; align-items: flex-start; }
 .result-player-event > div { min-width: 0; }
 .result-goal-event { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; min-width: 0; }
-.result-goal-scorer { color: var(--muted-foreground); }
-.result-goal-assist { color: var(--foreground); }
+.result-goal-scorer { color: var(--foreground); }
+.result-goal-assist { color: var(--muted-foreground); }
 .result-goal-assist small { margin: 0; font-size: 9px; }
 .result-event-names small { display: block; color: var(--muted-foreground); font-size: 11px; margin-top: 4px; }
 .result-event-empty { color: var(--muted-foreground); font-size: 12px; }
