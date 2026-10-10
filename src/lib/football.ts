@@ -34,7 +34,7 @@ export type MatchGoal = {
 export type MatchCard = {
   playerId: number;
   team: "A" | "B";
-  card: "yellow" | "red";
+  card: "yellow" | "red" | "blue";
 };
 
 export type Match = {
