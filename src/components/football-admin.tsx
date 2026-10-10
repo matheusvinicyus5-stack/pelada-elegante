@@ -52,7 +52,7 @@ const shortMonthNames = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO",
 
 function dateToInput(value: string) {
   const parts = value.match(/^(\d{1,2}) de ([a-zA-ZÀ-ÿ]+) de (\d{4})$/);
-  if (!parts) return "";
+  if (!parts?.[2]) return "";
 
   const month = fullMonthNames.indexOf(parts[2].toLowerCase()) + 1;
   if (month < 1) return "";
@@ -135,7 +135,6 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
   const [busy, setBusy] = useState(false);
   const [player, setPlayer] = useState<Player | null>(null);
   const [match, setMatch] = useState<Match | null>(null);
-  const [matchStep, setMatchStep] = useState(1);
   const [matchStep, setMatchStep] = useState(1);
   const [deleting, setDeleting] = useState<{ type: "player" | "match"; id: number; name: string } | null>(null);
   async function run(action: () => Promise<void>) {
@@ -477,9 +476,10 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                       <Button
                         type="button"
                         onClick={async () => {
+                          if (!player) return;
                           try {
                             const photo = await cropImageToSquare(photoDraft.src, photoDraft.x, photoDraft.y);
-                            setPlayer({ ...player!, photo });
+                            setPlayer({ ...player, photo });
                             setPhotoDraft(null);
                           } catch {
                             setError("Não foi possível aplicar o corte da foto.");
@@ -690,6 +690,34 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
     </section>
   </div>
 )}
+              {matchStep === 3 && (
+                <div className="my-4 space-y-4">
+                  <section className="space-y-3">
+                    <h3 className="font-semibold">Gols e assistências</h3>
+                    {(match.goals ?? []).map((goal, index) => {
+                      const roster = goal.team === "A" ? match.teamA : match.teamB;
+                      const assistOptions = roster.filter((id) => id !== goal.scorerId);
+
+                      return (
+                        <div key={`gol-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                          <strong className="self-center">Time {goal.team}</strong>
+                          <label>
+                            Autor do gol
+                            <select
+                              className="w-full rounded-md border bg-background p-2"
+                              value={goal.scorerId}
+                              onChange={(e) => {
+                                const scorerId = Number(e.target.value);
+                                setMatch({
+                                  ...match,
+                                  goals: (match.goals ?? []).map((item, itemIndex) => {
+                                    if (itemIndex !== index) return item;
+                                    const updated = { ...item, scorerId };
+                                    if (updated.assistId === scorerId) delete updated.assistId;
+                                    return updated;
+                                  }),
+                                });
+                              }}
                             >
                               {roster.map((id) => {
                                 const player = players.find((item) => item.id === id);
