@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useFootball } from './football-state';
 import { positionNames, type Player } from '@/lib/football';
-import { useFootballAdmin } from './football-admin';
+import { useFootballAdmin } from './football-admin-context';
 import { AttendanceDisplay } from './attendance';
 import { cn } from '@/lib/utils';
 import fairPlayLogo from '@/assets/amigos-fair-play-logo.jpeg.asset.json';

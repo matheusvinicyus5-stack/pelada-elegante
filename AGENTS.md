@@ -16,4 +16,5 @@
 - Share Cloud football data through one query-backed provider with revision checks to prevent stale edits from overwriting newer changes.
 
 - Reuse one shared admin-dialog provider for login and editing inside the public statistics/team pages, so administration never becomes a separate navigation tab.
+- Define the admin context and consumer hook in a UI-independent module so hot refresh preserves context identity and avoids circular provider imports.
 - Keep dated attendance records and an explicit imported baseline in each player payload; replay records chronologically through one shared helper so corrections remain reversible and month boundaries never reset frequency.

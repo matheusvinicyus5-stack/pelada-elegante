@@ -1,5 +1,5 @@
 import { useServerFn } from "@tanstack/react-start";
-import { createContext, useContext, useState, useRef, type ReactNode, type FormEvent } from "react";
+import { useState, useRef, type ReactNode, type FormEvent } from "react";
 import { LockKeyhole, LogOut, Plus, Pencil, Trash2, Save, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +9,7 @@ import { useFootball } from "@/components/football-state";
 import { enterDirection, exitDirection, changeDirectionPassword } from "@/lib/football.functions";
 import { AttendanceEditor } from "@/components/attendance";
 import type { Player, Match } from "@/lib/football";
+import { AdminContext, type AdminActions } from "./football-admin-context";
 
 const blank: Player = {
   id: 0,
@@ -76,23 +77,6 @@ function formatMatchDate(value: string) {
     date: `${String(day).padStart(2, "0")} de ${fullMonthNames[month - 1]} de ${year}`,
     short: `${String(day).padStart(2, "0")} ${shortMonthNames[month - 1]}`,
   };
-}
-type AdminActions = {
-  editPlayer: (p: Player) => void;
-  addPlayer: () => void;
-  deletePlayer: (p: Player) => void;
-  editMatch: (m: Match) => void;
-  addMatch: () => void;
-  deleteMatch: (m: Match) => void;
-  openLogin: () => void;
-  openPassword: () => void;
-  logout: () => Promise<void>;
-};
-const AdminContext = createContext<AdminActions | null>(null);
-export function useFootballAdmin() {
-  const value = useContext(AdminContext);
-  if (!value) throw new Error("AdminProvider ausente");
-  return value;
 }
 function cropImageToSquare(src: string, x: number, y: number): Promise<string> {
   return new Promise((resolve, reject) => {

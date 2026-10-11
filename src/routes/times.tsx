@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { PlayerAvatar, PlayerDialog, ShieldBadge } from "@/components/football";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { positionNames, type Player, type Match } from "@/lib/football";
-import { useFootballAdmin } from "@/components/football-admin";
+import { useFootballAdmin } from "@/components/football-admin-context";
 import { useFootball } from "@/components/football-state";
 import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/times")({

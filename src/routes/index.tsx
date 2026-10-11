@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Leaders, PlayerAvatar, PlayerDialog, ShieldBadge } from '@/components/football';
 import { type Player } from '@/lib/football';
-import { useFootballAdmin } from '@/components/football-admin';
+import { useFootballAdmin } from '@/components/football-admin-context';
 import { useFootball } from '@/components/football-state';
 import { AttendanceDisplay } from '@/components/attendance';
 import pitch from '@/assets/pitch.jpg';
