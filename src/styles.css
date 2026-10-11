@@ -176,6 +176,10 @@
   --coral: oklch(0.73 0.16 27);
   --mint: var(--primary);
   --blue-card: oklch(0.69 0.14 245);
+  --team-blue: oklch(0.55 0.17 255);
+  --team-red: oklch(0.57 0.21 25);
+  --team-black: oklch(0.14 0.003 255);
+  --team-badge-foreground: var(--foreground);
   --overlay: oklch(0.07 0.012 255 / 0.85);
   --shadow-panel: 0 15px 35px oklch(0.08 0.01 255 / 0.2);
 }
@@ -850,14 +854,15 @@ h1 > span {
   color: var(--muted-foreground);
 }
 .team-shield {
+  --team-color: var(--team-blue);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   width: 39px;
   height: 43px;
-  color: var(--primary);
-  background: color-mix(in oklch, var(--primary) 12%, transparent);
+  color: var(--team-badge-foreground);
+  background: repeating-linear-gradient(90deg, var(--team-color) 0%, var(--team-color) 20%, var(--team-black) 20%, var(--team-black) 40%);
   clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
 }
 .team-shield b {
@@ -869,8 +874,7 @@ h1 > span {
   margin-top: 7px;
 }
 .team-b {
-  color: var(--coral);
-  background: color-mix(in oklch, var(--coral) 12%, transparent);
+  --team-color: var(--team-red);
 }
 .match-preview-body .button {
   font-size: 10px;
