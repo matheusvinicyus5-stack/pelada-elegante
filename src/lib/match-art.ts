@@ -34,8 +34,9 @@ export async function renderMatchArt(canvas: HTMLCanvasElement, match: Match, pl
   const image = await loadLogo();
   canvas.width = 1080;
   canvas.height = 1350;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Não foi possível preparar a imagem neste navegador.");
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Não foi possível preparar a imagem neste navegador.");
+  const ctx = context;
   const style = getComputedStyle(document.documentElement);
   const color = (token: string) => style.getPropertyValue(token).trim();
   const foreground = color("--foreground");
