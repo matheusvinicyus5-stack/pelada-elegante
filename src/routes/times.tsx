@@ -27,7 +27,7 @@ export const Route = createFileRoute("/times")({
         content: "Confira os confrontos de sábado e os jogadores de cada time do Amigos Fair Play.",
       },
       { property: "og:title", content: "Times — Amigos Fair Play" },
-      { property: "og:description", content: "Time A x Time B: escalações e histórico da nossa pelada." },
+      { property: "og:description", content: "Time Azul x Time Vermelho: escalações e histórico da nossa pelada." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -149,17 +149,17 @@ function Teams() {
         <div className="match-result-header">
         <div className="result-team">
           <ShieldBadge team="A" />
-          <h2>Time A</h2>
+          <h2>Time Azul</h2>
         </div>
-        <strong className="result-score" aria-label={`${match.scoreA} gols do Time A`}>{match.scoreA}</strong>
+        <strong className="result-score" aria-label={`${match.scoreA} gols do Time Azul`}>{match.scoreA}</strong>
         <div className="result-status">
           <span>Encerrado</span>
           <span>{match.short}</span>
         </div>
-        <strong className="result-score" aria-label={`${match.scoreB} gols do Time B`}>{match.scoreB}</strong>
+        <strong className="result-score" aria-label={`${match.scoreB} gols do Time Vermelho`}>{match.scoreB}</strong>
         <div className="result-team result-team-b">
           <ShieldBadge team="B" />
-          <h2>Time B</h2>
+          <h2>Time Vermelho</h2>
         </div>
         </div>
         <div className="result-events">
@@ -174,7 +174,7 @@ function Teams() {
                 const goals = (match.goals ?? []).filter((goal) => goal.team === team);
                 const cards = (match.cards ?? []).filter((card) => card.team === team);
                 return <div key={team} className={cn("result-event-names", team === "B" && "result-event-names-b")}>
-                  <h4>Time {team}</h4>
+                  <h4>Time {team === "A" ? "Azul" : "Vermelho"}</h4>
                   {(kind === "goals" ? goals.length === 0 : cards.length === 0) && <p className="result-event-empty">Nenhum registro</p>}
                   {kind === "goals" ? goals.map((goal, index) => {
                     const scorer = players.find((player) => player.id === goal.scorerId)?.name ?? "Jogador não encontrado";
@@ -202,7 +202,7 @@ function Teams() {
             <div className="section-heading">
               <h2>
                 <span className={cn("tiny-dot", team === "B" && "coral-dot")} />
-                Time {team}
+                Time {team === "A" ? "Azul" : "Vermelho"}
                 <span className="count-badge">{(team === "A" ? match.teamA : match.teamB).length} jogadores</span>
               </h2>
               <span className="section-caption">ESCALAÇÃO</span>
@@ -280,7 +280,7 @@ function Teams() {
                     variant={draft?.teamA.includes(p.id) ? "default" : "outline"}
                     onClick={() => move(p.id, "A")}
                   >
-                    A{draft?.teamA.includes(p.id) && <Check size={12} />}
+                    Azul{draft?.teamA.includes(p.id) && <Check size={12} />}
                   </Button>
                   <Button
                     size="sm"
@@ -288,7 +288,7 @@ function Teams() {
                     className={cn(draft?.teamB.includes(p.id) && "team-b-button")}
                     onClick={() => move(p.id, "B")}
                   >
-                    B{draft?.teamB.includes(p.id) && <Check size={12} />}
+                    Vermelho{draft?.teamB.includes(p.id) && <Check size={12} />}
                   </Button>
                 </div>
               ))}
