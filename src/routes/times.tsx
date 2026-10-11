@@ -18,6 +18,7 @@ import { positionNames, type Player, type Match } from "@/lib/football";
 import { useFootballAdmin } from "@/components/football-admin-context";
 import { useFootball } from "@/components/football-state";
 import { cn } from "@/lib/utils";
+import { MatchArt } from "@/components/match-art";
 export const Route = createFileRoute("/times")({
   head: () => ({
     meta: [
@@ -85,6 +86,7 @@ function Teams() {
         </div>
         {direction && (
           <div className="admin-toolbar">
+            <MatchArt match={match} players={players}/>
             <Button size="sm" onClick={admin.addMatch}>
               <Plus size={16} />
               Adicionar confronto

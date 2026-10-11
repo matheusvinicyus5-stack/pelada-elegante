@@ -18,3 +18,4 @@
 - Reuse one shared admin-dialog provider for login and editing inside the public statistics/team pages, so administration never becomes a separate navigation tab.
 - Define the admin context and consumer hook in a UI-independent module so hot refresh preserves context identity and avoids circular provider imports.
 - Keep dated attendance records and an explicit imported baseline in each player payload; replay records chronologically through one shared helper so corrections remain reversible and month boundaries never reset frequency.
+- Render match-result artwork deterministically in the browser using Canvas and shared brand tokens, with the same canvas for preview and PNG export; no AI call or data write is needed.
