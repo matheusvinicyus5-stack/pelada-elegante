@@ -589,7 +589,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <label>
-          Gols Time A
+          Gols Time Azul
           <Input
             type="number"
             min={0}
@@ -602,7 +602,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
         </label>
 
         <label>
-          Gols Time B
+          Gols Time Vermelho
           <Input
             type="number"
             min={0}
@@ -617,7 +617,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <section>
-          <h4 className="font-semibold">Time A</h4>
+          <h4 className="font-semibold">Time Azul</h4>
           <ul className="list-inside list-disc">
             {match.teamA.length === 0 && <li>Nenhum jogador escalado</li>}
             {match.teamA.map((id) => {
@@ -628,7 +628,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
         </section>
 
         <section>
-          <h4 className="font-semibold">Time B</h4>
+          <h4 className="font-semibold">Time Vermelho</h4>
           <ul className="list-inside list-disc">
             {match.teamB.length === 0 && <li>Nenhum jogador escalado</li>}
             {match.teamB.map((id) => {
@@ -655,7 +655,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
               return (
                 <li key={`review-goal-${index}`}>
-                  Time {goal.team}: {scorer?.name ?? "Atleta não encontrado"}
+                  Time {goal.team === "A" ? "Azul" : "Vermelho"}: {scorer?.name ?? "Atleta não encontrado"}
                   {assister ? ` · assistência: ${assister.name}` : ""}
                 </li>
               );
@@ -679,7 +679,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
               return (
                 <li key={`review-card-${index}`}>
-                  Time {card.team}: {player?.name ?? "Atleta não encontrado"} ·{" "}
+                  Time {card.team === "A" ? "Azul" : "Vermelho"}: {player?.name ?? "Atleta não encontrado"} ·{" "}
                   {cardName}
                 </li>
               );
@@ -700,7 +700,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
                       return (
                         <div key={`gol-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                          <strong className="self-center">Time {goal.team}</strong>
+                          <strong className="self-center">Time {goal.team === "A" ? "Azul" : "Vermelho"}</strong>
                           <label>
                             Autor do gol
                             <select
@@ -791,7 +791,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                           });
                         }}
                       >
-                        Adicionar gol · Time A
+                        Adicionar gol · Time Azul
                       </Button>
 
                       <Button
@@ -807,7 +807,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                           });
                         }}
                       >
-                        Adicionar gol · Time B
+                        Adicionar gol · Time Vermelho
                       </Button>
                     </div>
                   </section>
@@ -820,7 +820,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
                       return (
                         <div key={`cartao-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                          <strong className="self-center">Time {card.team}</strong>
+                          <strong className="self-center">Time {card.team === "A" ? "Azul" : "Vermelho"}</strong>
 
                           <label>
                             Jogador
@@ -899,7 +899,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                           });
                         }}
                       >
-                        Adicionar cartão · Time A
+                        Adicionar cartão · Time Azul
                       </Button>
 
                       <Button
@@ -915,7 +915,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                           });
                         }}
                       >
-                        Adicionar cartão · Time B
+                        Adicionar cartão · Time Vermelho
                       </Button>
                     </div>
                   </section>
@@ -944,8 +944,8 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                         }
                       >
                         <option value="">Não escalado</option>
-                        <option value="A">Time A</option>
-                        <option value="B">Time B</option>
+                        <option value="A">Time Azul</option>
+                        <option value="B">Time Vermelho</option>
                       </select>
                     </label>
                   ))}
