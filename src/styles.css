@@ -265,17 +265,15 @@ button {
   align-items: center;
   justify-content: center;
   width: 42px;
-  height: 48px;
+  height: 42px;
+  flex-shrink: 0;
   color: var(--primary);
 }
-.brand-icon > svg {
-  width: 42px;
-  height: 48px;
-}
-.brand-ball {
-  position: absolute;
-  font-size: 24px;
-  top: 12px;
+.brand-icon > img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
 }
 .header-inner nav {
   display: flex;
@@ -865,13 +863,12 @@ h1 > span {
   background: repeating-linear-gradient(90deg, var(--team-color) 0%, var(--team-color) 20%, var(--team-black) 20%, var(--team-black) 40%);
   clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
 }
-.team-shield b {
-  position: absolute;
-  top: 4px;
-  font-size: 8px;
-}
-.team-shield svg {
-  margin-top: 7px;
+.team-shield > img {
+  width: 74%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 12%;
 }
 .team-b {
   --team-color: var(--team-red);
@@ -1186,14 +1183,6 @@ h1 > span {
 .score-team .team-shield {
   height: 65px;
   width: 57px;
-}
-.score-team .team-shield svg {
-  height: 27px;
-  width: 27px;
-}
-.score-team .team-shield b {
-  font-size: 12px;
-  top: 8px;
 }
 .score-team h2 {
   font-family: var(--font-display);
