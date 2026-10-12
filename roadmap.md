@@ -1,5 +1,5 @@
 # Roadmap
-- [x] Centralizar os eventos de gols abaixo do placar de cada time na arte e conferir a imagem.
+- [x] Alinhar eventos do Time Azul à esquerda e do Time Vermelho à direita na arte, com margens iguais, e conferir a imagem.
 - [x] Alinhar os números aos respectivos escudos na arte do placar e verificar a imagem.
 - [x] Adicionar prévia e download da arte de placar para o feed (1080 × 1350) e verificar a imagem exportada.
 - [ ] Corrigir perda de acesso da Direção ao salvar partidas e verificar persistência.
