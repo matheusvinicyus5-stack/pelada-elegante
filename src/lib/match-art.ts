@@ -89,15 +89,16 @@ export async function renderMatchArt(canvas: HTMLCanvasElement, match: Match, pl
   const lineHeight = Math.min(39, 238 / maxRows);
   const fontSize = Math.min(25, lineHeight - 3);
   groups.forEach((rows, team) => {
-    const x = team === 0 ? 64 : 580;
-    text("GOLS", x, 973, 16, muted);
+    const x = team === 0 ? 250 : 830;
+    const width = 372;
+    text("GOLS", x, 973, 16, muted, width, false, "center");
     let y = 1015;
-    if (!rows.length) text("Nenhum gol registrado", x, y, 20, muted, 436);
+    if (!rows.length) text("Nenhum gol registrado", x, y, 20, muted, width, false, "center");
     rows.forEach((row) => {
-      text(`${row.scorer}  ⚽${row.count > 1 ? ` ×${row.count}` : ""}`, x, y, fontSize, foreground, 436);
+      text(`${row.scorer}  ⚽${row.count > 1 ? ` ×${row.count}` : ""}`, x, y, fontSize, foreground, width, false, "center");
       y += lineHeight;
       if (row.assist) {
-        text(`Assistência · ${row.assist}`, x, y, Math.max(14, fontSize - 4), muted, 436);
+        text(`Assistência · ${row.assist}`, x, y, Math.max(14, fontSize - 4), muted, width, false, "center");
         y += lineHeight;
       }
     });
