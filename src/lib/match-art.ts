@@ -79,9 +79,9 @@ export async function renderMatchArt(canvas: HTMLCanvasElement, match: Match, pl
   shield(250, 534, "A");shield(830, 534, "B");
   text("TIME AZUL", 250, 669, 42, foreground, 400, true, "center");
   text("TIME VERMELHO", 830, 669, 42, foreground, 400, true, "center");
-  text(String(match.scoreA), 340, 884, 220, foreground, 390, true, "center");
+  text(String(match.scoreA), 250, 884, 220, foreground, 390, true, "center");
   text("×", 540, 848, 64, muted, 110, false, "center");
-  text(String(match.scoreB), 740, 884, 220, foreground, 390, true, "center");
+  text(String(match.scoreB), 830, 884, 220, foreground, 390, true, "center");
   ctx.fillStyle = color("--border");ctx.fillRect(64, 926, 952, 2);
   const groups = [matchArtGoals(match, players, "A"), matchArtGoals(match, players, "B")];
   const maxRows = Math.max(...groups.map((rows) => rows.reduce((n, row) => n + (row.assist ? 2 : 1), 0)), 1);
