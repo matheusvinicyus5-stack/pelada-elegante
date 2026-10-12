@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Alinhar os números aos respectivos escudos na arte do placar e verificar a imagem.
+- [x] Alinhar os números aos respectivos escudos na arte do placar e verificar a imagem.
 - [x] Adicionar prévia e download da arte de placar para o feed (1080 × 1350) e verificar a imagem exportada.
 - [ ] Corrigir perda de acesso da Direção ao salvar partidas e verificar persistência.
 - [x] Adaptar a apresentação de Times à referência, com placar e eventos por lado sem minutagem.
