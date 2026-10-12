@@ -89,16 +89,17 @@ export async function renderMatchArt(canvas: HTMLCanvasElement, match: Match, pl
   const lineHeight = Math.min(39, 238 / maxRows);
   const fontSize = Math.min(25, lineHeight - 3);
   groups.forEach((rows, team) => {
-    const x = team === 0 ? 250 : 830;
-    const width = 372;
-    text("GOLS", x, 973, 16, muted, width, false, "center");
+    const x = team === 0 ? 64 : 1016;
+    const align: CanvasTextAlign = team === 0 ? "left" : "right";
+    const width = 436;
+    text("GOLS", x, 973, 16, muted, width, false, align);
     let y = 1015;
-    if (!rows.length) text("Nenhum gol registrado", x, y, 20, muted, width, false, "center");
+    if (!rows.length) text("Nenhum gol registrado", x, y, 20, muted, width, false, align);
     rows.forEach((row) => {
-      text(`${row.scorer}  ⚽${row.count > 1 ? ` ×${row.count}` : ""}`, x, y, fontSize, foreground, width, false, "center");
+      text(`${row.scorer}  ⚽${row.count > 1 ? ` ×${row.count}` : ""}`, x, y, fontSize, foreground, width, false, align);
       y += lineHeight;
       if (row.assist) {
-        text(`Assistência · ${row.assist}`, x, y, Math.max(14, fontSize - 4), muted, width, false, "center");
+        text(`Assistência · ${row.assist}`, x, y, Math.max(14, fontSize - 4), muted, width, false, align);
         y += lineHeight;
       }
     });
