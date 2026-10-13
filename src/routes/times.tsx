@@ -208,7 +208,7 @@ function Teams() {
                   <span className="jersey-number">{p.number}</span>
                   <PlayerAvatar player={p} />
                   <span className="roster-name">
-                    <strong>{p.name}</strong>
+                    <strong>{p.name}{(team === "A" ? match.captainA : match.captainB) === id && <span className="captain-mark" title="Capitão"> Ⓒ</span>}</strong>
                     <small>{positionNames[p.position] ?? p.position}</small>
                   </span>
                   <span className="position-badge">{p.position}</span>

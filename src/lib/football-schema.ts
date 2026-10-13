@@ -55,6 +55,8 @@ export const matchSchema = z.object({
   scoreB: count,
   teamA: z.array(count),
   teamB: z.array(count),
+  captainA: count.optional(),
+  captainB: count.optional(),
   goals: z
     .array(
       z.object({
@@ -85,6 +87,8 @@ export const footballSchema = z
       const all = [...m.teamA, ...m.teamB];
       if (new Set(all).size !== all.length || all.some((id) => !ids.has(id)))
         ctx.addIssue({ code: "custom", message: "Escalação inválida" });
+      if ((m.captainA !== undefined && !m.teamA.includes(m.captainA)) || (m.captainB !== undefined && !m.teamB.includes(m.captainB)))
+        ctx.addIssue({ code: "custom", message: "Capitão fora da escalação" });
     }
   });
 export type FootballData = z.infer<typeof footballSchema>;

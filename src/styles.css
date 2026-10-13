@@ -2095,3 +2095,6 @@ h1 > span {
   font-size: 10px;
   color: var(--muted-foreground);
 }
+
+.captain-mark { color: var(--gold, var(--primary)); font-weight: 700; white-space: nowrap; }
+.captain-toggle { font-weight: 700; }
