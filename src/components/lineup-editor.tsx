@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { PlayerAvatar, ShieldBadge } from "@/components/football";
 import { positionNames, type Player } from "@/lib/football";
 
-type Lineup = { teamA: number[]; teamB: number[]; captainA?: number; captainB?: number };
+type Lineup = { teamA: number[]; teamB: number[]; captainA?: number | undefined; captainB?: number | undefined };
 type Props = Lineup & {
   players: Player[];
   onChange: (lineup: Lineup) => void;
