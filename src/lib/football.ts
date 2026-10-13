@@ -45,6 +45,8 @@ export type Match = {
   scoreB: number;
   teamA: number[];
   teamB: number[];
+  captainA?: number;
+  captainB?: number;
   goals?: MatchGoal[];
   cards?: MatchCard[];
   example?: boolean | undefined;

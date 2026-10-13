@@ -607,7 +607,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
             {match.teamA.length === 0 && <li>Nenhum jogador escalado</li>}
             {match.teamA.map((id) => {
               const player = players.find((item) => item.id === id);
-              return player ? <li key={id}>{player.name}</li> : null;
+              return player ? <li key={id}>{player.name}{match.captainA === id && <span className="captain-mark"> Ⓒ Capitão</span>}</li> : null;
             })}
           </ul>
         </section>
@@ -618,7 +618,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
             {match.teamB.length === 0 && <li>Nenhum jogador escalado</li>}
             {match.teamB.map((id) => {
               const player = players.find((item) => item.id === id);
-              return player ? <li key={id}>{player.name}</li> : null;
+              return player ? <li key={id}>{player.name}{match.captainB === id && <span className="captain-mark"> Ⓒ Capitão</span>}</li> : null;
             })}
           </ul>
         </section>
