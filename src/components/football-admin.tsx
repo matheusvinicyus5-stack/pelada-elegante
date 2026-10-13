@@ -10,6 +10,7 @@ import { enterDirection, exitDirection, changeDirectionPassword } from "@/lib/fo
 import { AttendanceEditor } from "@/components/attendance";
 import type { Player, Match } from "@/lib/football";
 import { AdminContext, type AdminActions } from "./football-admin-context";
+import { LineupEditor } from "./lineup-editor";
 
 const blank: Player = {
   id: 0,
@@ -906,34 +907,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 </div>
               )}
               {matchStep === 2 && (
-                <div className="direction-lineups">
-                  {players.map((p) => (
-                    <label key={p.id}>
-                      <span>{p.name}</span>
-                      <select
-                        aria-label={`Time de ${p.name}`}
-                        value={match.teamA.includes(p.id) ? "A" : match.teamB.includes(p.id) ? "B" : ""}
-                        onChange={(e) =>
-                          setMatch({
-                            ...match,
-                            teamA: [
-                              ...match.teamA.filter((id) => id !== p.id),
-                              ...(e.target.value === "A" ? [p.id] : []),
-                            ],
-                            teamB: [
-                              ...match.teamB.filter((id) => id !== p.id),
-                              ...(e.target.value === "B" ? [p.id] : []),
-                            ],
-                          })
-                        }
-                      >
-                        <option value="">Não escalado</option>
-                        <option value="A">Time Azul</option>
-                        <option value="B">Time Vermelho</option>
-                      </select>
-                    </label>
-                  ))}
-                </div>
+                <LineupEditor players={players} teamA={match.teamA} teamB={match.teamB} onChange={(lineup) => setMatch({ ...match, ...lineup })} />
               )}
               {error && (
                 <p role="alert" className="direction-error">
