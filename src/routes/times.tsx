@@ -4,7 +4,6 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  ArrowLeftRight,
   Users,
   Check,
   Plus,
@@ -19,6 +18,7 @@ import { useFootballAdmin } from "@/components/football-admin-context";
 import { useFootball } from "@/components/football-state";
 import { cn } from "@/lib/utils";
 import { MatchArt } from "@/components/match-art";
+import { LineupEditor } from "@/components/lineup-editor";
 export const Route = createFileRoute("/times")({
   head: () => ({
     meta: [
@@ -44,7 +44,6 @@ function Teams() {
   const [selected, setSelected] = useState<Player | null>(null);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState<Match | null>(null);
-  const [search, setSearch] = useState("");
   const match = matches[active] ?? matches[0];
   if (!match)
     return (
@@ -63,14 +62,6 @@ function Teams() {
     if (!match) return;
     setDraft({ ...match, teamA: [...match.teamA], teamB: [...match.teamB] });
     setEditing(true);
-  }
-  function move(id: number, team: "A" | "B") {
-    if (!draft) return;
-    const a = draft.teamA.filter((p) => p !== id);
-    const b = draft.teamB.filter((p) => p !== id);
-    if (team === "A" && !draft.teamA.includes(id)) a.push(id);
-    if (team === "B" && !draft.teamB.includes(id)) b.push(id);
-    setDraft({ ...draft, teamA: a, teamB: b });
   }
   return (
     <main className="page-width main-content">
@@ -261,40 +252,7 @@ function Teams() {
         <DialogContent className="organize-dialog">
           <DialogTitle>Organizar os times</DialogTitle>
           <DialogDescription>{match.date} · Escalação da partida.</DialogDescription>
-          <label className="search-field">
-            <Users size={16} />
-            <input
-              aria-label="Buscar atleta para escalar"
-              placeholder="Buscar atleta..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </label>
-          <div className="organize-list">
-            {players
-              .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-              .map((p) => (
-                <div key={p.id}>
-                  <PlayerAvatar player={p} />
-                  <span>{p.name}</span>
-                  <Button
-                    size="sm"
-                    variant={draft?.teamA.includes(p.id) ? "default" : "outline"}
-                    onClick={() => move(p.id, "A")}
-                  >
-                    Azul{draft?.teamA.includes(p.id) && <Check size={12} />}
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant={draft?.teamB.includes(p.id) ? "default" : "outline"}
-                    className={cn(draft?.teamB.includes(p.id) && "team-b-button")}
-                    onClick={() => move(p.id, "B")}
-                  >
-                    Vermelho{draft?.teamB.includes(p.id) && <Check size={12} />}
-                  </Button>
-                </div>
-              ))}
-          </div>
+          {draft && <LineupEditor players={players} teamA={draft.teamA} teamB={draft.teamB} onChange={(lineup) => setDraft({ ...draft, ...lineup })} />}
           {error && (
             <p role="alert" className="direction-error">
               {error}
