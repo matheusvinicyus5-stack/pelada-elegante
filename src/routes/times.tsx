@@ -1,24 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  CalendarDays,
-  ChevronLeft,
-  ChevronRight,
-  Users,
-  Check,
-  Plus,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PlayerAvatar, PlayerDialog, ShieldBadge } from "@/components/football";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { positionNames, type Player, type Match } from "@/lib/football";
+import { positionNames, type Player } from "@/lib/football";
 import { useFootballAdmin } from "@/components/football-admin-context";
 import { useFootball } from "@/components/football-state";
 import { cn } from "@/lib/utils";
 import { MatchArt } from "@/components/match-art";
-import { LineupEditor } from "@/components/lineup-editor";
 export const Route = createFileRoute("/times")({
   head: () => ({
     meta: [
@@ -36,14 +25,10 @@ export const Route = createFileRoute("/times")({
   component: Teams,
 });
 function Teams() {
-  const { players, matches, active: direction, save } = useFootball();
+  const { players, matches, active: direction } = useFootball();
   const admin = useFootballAdmin();
-  const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
   const [active, setActive] = useState(0);
   const [selected, setSelected] = useState<Player | null>(null);
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState<Match | null>(null);
   const match = matches[active] ?? matches[0];
   if (!match)
     return (
@@ -58,11 +43,6 @@ function Teams() {
         )}
       </main>
     );
-  function edit() {
-    if (!match) return;
-    setDraft({ ...match, teamA: [...match.teamA], teamB: [...match.teamB] });
-    setEditing(true);
-  }
   return (
     <main className="page-width main-content">
       <div className="page-heading">
@@ -81,10 +61,6 @@ function Teams() {
             <Button size="sm" onClick={admin.addMatch}>
               <Plus size={16} />
               Adicionar confronto
-            </Button>
-            <Button size="sm" variant="outline" onClick={edit}>
-              <Users size={16} />
-              Organizar times
             </Button>
           </div>
         )}
@@ -248,37 +224,6 @@ function Teams() {
         </div>
       </section>
       <PlayerDialog player={selected} onClose={() => setSelected(null)} />
-      <Dialog open={editing && direction} onOpenChange={setEditing}>
-        <DialogContent className="organize-dialog">
-          <DialogTitle>Organizar os times</DialogTitle>
-          <DialogDescription>{match.date} · Escalação da partida.</DialogDescription>
-          {draft && <LineupEditor players={players} teamA={draft.teamA} teamB={draft.teamB} captainA={draft.captainA} captainB={draft.captainB} onChange={(lineup) => setDraft({ ...draft, ...lineup })} />}
-          {error && (
-            <p role="alert" className="direction-error">
-              {error}
-            </p>
-          )}
-          <Button
-            disabled={busy}
-            onClick={async () => {
-              if (!draft) return;
-              setBusy(true);
-              setError("");
-              try {
-                await save({ players, matches: matches.map((m, i) => (m.id === draft.id ? draft : m)) });
-                setEditing(false);
-              } catch (e) {
-                setError(e instanceof Error ? e.message : "Não foi possível salvar");
-              } finally {
-                setBusy(false);
-              }
-            }}
-          >
-            <Check />
-            Aplicar escalação
-          </Button>
-        </DialogContent>
-      </Dialog>
     </main>
   );
 }
