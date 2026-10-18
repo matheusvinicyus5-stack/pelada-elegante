@@ -907,7 +907,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 </div>
               )}
               {matchStep === 2 && (
-                <LineupEditor players={players} teamA={match.teamA} teamB={match.teamB} onChange={(lineup) => setMatch({ ...match, ...lineup })} />
+                <LineupEditor players={players} teamA={match.teamA} teamB={match.teamB} captainA={match.captainA} captainB={match.captainB} onChange={(lineup) => setMatch({ ...match, ...lineup })} />
               )}
               {error && (
                 <p role="alert" className="direction-error">
