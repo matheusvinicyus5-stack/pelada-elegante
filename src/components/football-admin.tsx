@@ -640,7 +640,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
               return (
                 <li key={`review-goal-${index}`}>
-                  Time {goal.team === "A" ? "Azul" : "Vermelho"}: {scorer?.name ?? "Atleta não encontrado"}
+                  Time {goal.team === "A" ? "Azul" : "Vermelho"}: {scorer?.name ?? "Atleta não encontrado"}{goal.ownGoal ? " (contra)" : ""}
                   {assister ? ` · assistência: ${assister.name}` : ""}
                 </li>
               );
@@ -772,7 +772,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                                 ) : null;
                               })}
                             </select>
-                          </label>
+                          </label>}
 
                           <Button
                             type="button"

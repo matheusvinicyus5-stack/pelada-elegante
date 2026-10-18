@@ -28,6 +28,8 @@ export const positionNames: Record<string, string> = {
 export type MatchGoal = {
   scorerId: number;
   assistId?: number | undefined;
+  /** Gol contra: o autor é do time adversário; `team` é quem recebe o gol a favor. */
+  ownGoal?: boolean | undefined;
   team: "A" | "B";
 };
 

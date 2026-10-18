@@ -6,11 +6,11 @@ export function matchArtGoals(match: Match, players: Player[], team: "A" | "B") 
   const groups = new Map<string, { scorer: string; assist: string | undefined; count: number }>();
   for (const goal of match.goals ?? []) {
     if (goal.team !== team) continue;
-    const key = `${goal.scorerId}:${goal.assistId ?? "none"}`;
+    const key = `${goal.scorerId}:${goal.assistId ?? "none"}:${goal.ownGoal ? "og" : ""}`;
     const existing = groups.get(key);
     if (existing) existing.count++;
     else groups.set(key, {
-      scorer: names.get(goal.scorerId) ?? "Jogador não encontrado",
+      scorer: `${names.get(goal.scorerId) ?? "Jogador não encontrado"}${goal.ownGoal ? " (contra)" : ""}`,
       assist: goal.assistId === undefined ? undefined : names.get(goal.assistId),
       count: 1,
     });
