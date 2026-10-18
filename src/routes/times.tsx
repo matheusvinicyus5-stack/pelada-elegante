@@ -252,7 +252,7 @@ function Teams() {
         <DialogContent className="organize-dialog">
           <DialogTitle>Organizar os times</DialogTitle>
           <DialogDescription>{match.date} · Escalação da partida.</DialogDescription>
-          {draft && <LineupEditor players={players} teamA={draft.teamA} teamB={draft.teamB} onChange={(lineup) => setDraft({ ...draft, ...lineup })} />}
+          {draft && <LineupEditor players={players} teamA={draft.teamA} teamB={draft.teamB} captainA={draft.captainA} captainB={draft.captainB} onChange={(lineup) => setDraft({ ...draft, ...lineup })} />}
           {error && (
             <p role="alert" className="direction-error">
               {error}
