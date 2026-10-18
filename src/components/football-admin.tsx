@@ -640,7 +640,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
               return (
                 <li key={`review-goal-${index}`}>
-                  Time {goal.team === "A" ? "Azul" : "Vermelho"}: {scorer?.name ?? "Atleta não encontrado"}
+                  Time {goal.team === "A" ? "Azul" : "Vermelho"}: {scorer?.name ?? "Atleta não encontrado"}{goal.ownGoal ? " (contra)" : ""}
                   {assister ? ` · assistência: ${assister.name}` : ""}
                 </li>
               );
@@ -680,14 +680,42 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                   <section className="space-y-3">
                     <h3 className="font-semibold">Gols e assistências</h3>
                     {(match.goals ?? []).map((goal, index) => {
-                      const roster = goal.team === "A" ? match.teamA : match.teamB;
-                      const assistOptions = roster.filter((id) => id !== goal.scorerId);
+                      const own = goal.team === "A" ? match.teamA : match.teamB;
+                      const rival = goal.team === "A" ? match.teamB : match.teamA;
+                      const roster = goal.ownGoal ? rival : own;
+                      const assistOptions = own.filter((id) => id !== goal.scorerId);
 
                       return (
                         <div key={`gol-${index}`} className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                          <strong className="self-center">Time {goal.team === "A" ? "Azul" : "Vermelho"}</strong>
+                          <div className="self-center space-y-1">
+                            <strong className="block">Gol do Time {goal.team === "A" ? "Azul" : "Vermelho"}</strong>
+                            <label className="flex items-center gap-2 text-sm">
+                              <input
+                                type="checkbox"
+                                checked={!!goal.ownGoal}
+                                disabled={!rival.length}
+                                onChange={(e) => {
+                                  const ownGoal = e.target.checked;
+                                  const scorerId = (ownGoal ? rival : own)[0];
+                                  if (scorerId === undefined) return;
+                                  setMatch({
+                                    ...match,
+                                    goals: (match.goals ?? []).map((item, itemIndex) => {
+                                      if (itemIndex !== index) return item;
+                                      const updated = { ...item, scorerId };
+                                      delete updated.assistId;
+                                      if (ownGoal) updated.ownGoal = true;
+                                      else delete updated.ownGoal;
+                                      return updated;
+                                    }),
+                                  });
+                                }}
+                              />
+                              Gol contra (feito por adversário)
+                            </label>
+                          </div>
                           <label>
-                            Autor do gol
+                            {goal.ownGoal ? "Quem fez contra" : "Autor do gol"}
                             <select
                               className="w-full rounded-md border bg-background p-2"
                               value={goal.scorerId}
@@ -715,7 +743,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                             </select>
                           </label>
 
-                          <label>
+                          {goal.ownGoal ? <span /> : <label>
                             Assistência
                             <select
                               className="w-full rounded-md border bg-background p-2"
@@ -744,7 +772,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                                 ) : null;
                               })}
                             </select>
-                          </label>
+                          </label>}
 
                           <Button
                             type="button"

@@ -174,8 +174,8 @@ function Teams() {
                     const assist = goal.assistId === undefined ? undefined : players.find((player) => player.id === goal.assistId)?.name;
                     return <div className="result-goal-event" key={index}>
                       <span className="result-goal-scorer">{scorer}</span>
-                      <span role="img" aria-label="Gol">⚽</span>
-                      {assist && <span className="result-goal-assist"><small>Assistência</small>{assist}</span>}
+                      <span role="img" aria-label={goal.ownGoal ? "Gol contra" : "Gol"}>⚽</span>
+                      {goal.ownGoal ? <span className="result-goal-assist">(contra)</span> : assist && <span className="result-goal-assist"><small>Assistência</small>{assist}</span>}
                     </div>;
                   }) : cards.map((card, index) => <div className="result-player-event" key={index}>
                     <span>{players.find((player) => player.id === card.playerId)?.name ?? "Jogador não encontrado"}</span>

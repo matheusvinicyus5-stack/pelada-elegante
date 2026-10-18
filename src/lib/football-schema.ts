@@ -62,6 +62,7 @@ export const matchSchema = z.object({
       z.object({
         scorerId: count,
         assistId: count.optional(),
+        ownGoal: z.boolean().optional(),
         team: z.enum(["A", "B"]),
       }),
     )
