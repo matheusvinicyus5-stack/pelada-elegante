@@ -9,8 +9,13 @@ export function recentSaturdays(today: string): string[] {
  date.setUTCDate(date.getUTCDate() - ((date.getUTCDay()+1)%7));
  return Array.from({length:5},(_,index)=>{const day=new Date(date);day.setUTCDate(day.getUTCDate()-(4-index)*7);return day.toISOString().slice(0,10);});
 }
+// Frequência = presenças nos últimos 5 sábados registrados × 20%.
+// A base importada vira 5 sábados "virtuais" (faltas mais antigas primeiro) que vão saindo da janela.
 export function attendanceValue(base: number, records: AttendanceRecord[]) {
- return [...records].sort((a,b)=>a.date.localeCompare(b.date)).reduce((value,record)=>Math.max(0,Math.min(100,value+(record.status==='present'?20:-20))),base);
+ const presences=Math.max(0,Math.min(5,Math.round(base/20)));
+ const virtual:boolean[]=Array.from({length:5},(_,i)=>i>=5-presences);
+ const real=[...records].sort((a,b)=>a.date.localeCompare(b.date)).map(record=>record.status==='present');
+ return [...virtual,...real].slice(-5).filter(Boolean).length*20;
 }
 export function recordAttendance<T extends AttendancePlayer>(player: T, date: string, status: AttendanceRecord['status'] | null): T & AttendancePlayer {
  const base=player.attendanceBase??player.attendance;
