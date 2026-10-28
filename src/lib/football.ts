@@ -15,6 +15,7 @@ export type Player = {
   attendanceBase?: number | undefined;
   attendanceRecords?: AttendanceRecord[] | undefined;
   photo?: string | undefined;
+  previous?: import("./player-changes").PlayerSnapshot | undefined;
 };
 export const players: Player[] = playerData;
 export const positionNames: Record<string, string> = {

@@ -327,7 +327,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 run(async () => {
                   await save({
                     players: players.some((p) => p.id === player.id)
-                      ? players.map((p) => (p.id === player.id ? player : p))
+                      ? withPreviousSnapshots(players, players.map((p) => (p.id === player.id ? player : p)))
                       : [...players, player],
                     matches,
                   });
