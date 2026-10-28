@@ -24,6 +24,18 @@ export const playerSchema = z
       )
       .max(2000)
       .optional(),
+    previous: z
+      .object({
+        rank: count,
+        points: count,
+        goals: count,
+        assists: count,
+        yellow: count,
+        red: count,
+        blue: count,
+        attendance: z.number().min(0).max(100),
+      })
+      .optional(),
     photo: z
       .string()
       .max(2000000)

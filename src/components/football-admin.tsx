@@ -1,4 +1,5 @@
 import { useServerFn } from "@tanstack/react-start";
+import { withPreviousSnapshots } from "@/lib/player-changes";
 import { useState, useRef, type ReactNode, type FormEvent } from "react";
 import { LockKeyhole, LogOut, Plus, Pencil, Trash2, Save, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -327,7 +328,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 run(async () => {
                   await save({
                     players: players.some((p) => p.id === player.id)
-                      ? players.map((p) => (p.id === player.id ? player : p))
+                      ? withPreviousSnapshots(players, players.map((p) => (p.id === player.id ? player : p)))
                       : [...players, player],
                     matches,
                   });

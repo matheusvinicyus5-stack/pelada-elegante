@@ -2100,3 +2100,14 @@ h1 > span {
 .captain-toggle { font-weight: 700; opacity: 0.35; color: var(--muted-foreground); border: 1px dashed var(--border); border-radius: 999px; }
 .captain-toggle:hover { opacity: 0.75; }
 .captain-toggle[aria-pressed="true"] { opacity: 1; color: var(--background); background: var(--gold, var(--primary)); border: 1px solid var(--gold, var(--primary)); box-shadow: 0 0 0 3px color-mix(in oklch, var(--gold, var(--primary)) 25%, transparent); }
+
+.profile-changes { margin-top: 1.25rem; padding: 0.9rem 1rem; border-radius: 0.9rem; border: 1px solid var(--border); background: color-mix(in oklab, var(--primary) 6%, transparent); text-align: left; }
+.profile-changes-title { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-foreground); margin-bottom: 0.6rem; }
+.change-rank { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.7rem; border-radius: 0.6rem; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; }
+.change-rank.up { background: color-mix(in oklab, var(--primary) 16%, transparent); color: var(--primary); }
+.change-rank.down { background: color-mix(in oklab, var(--destructive) 16%, transparent); color: var(--destructive); }
+.change-row { display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.3rem 0; color: var(--muted-foreground); }
+.change-row strong { color: var(--foreground); }
+.change-row em { font-style: normal; font-weight: 700; margin-left: 0.5rem; font-size: 0.75rem; }
+.change-row em.up { color: var(--primary); }
+.change-row em.down { color: var(--destructive); }
