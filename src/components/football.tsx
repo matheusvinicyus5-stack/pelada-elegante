@@ -20,7 +20,7 @@ import { positionNames, type Player } from "@/lib/football";
 import { useFootballAdmin } from "./football-admin-context";
 import { AttendanceDisplay } from "./attendance";
 import { cn } from "@/lib/utils";
-import { rankOf, leaderIds, compareRanking } from "@/lib/player-changes";
+import { rankOf, leaderIds } from "@/lib/player-changes";
 import fairPlayLogo from "@/assets/amigos-fair-play-logo.jpeg.asset.json";
 
 export function SiteHeader() {
@@ -348,4 +348,3 @@ export function LeaderBadges({ player, players, labels = false }: { player: Play
     </div>
   );
 }
-void compareRanking;
