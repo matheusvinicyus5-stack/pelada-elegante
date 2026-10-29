@@ -5,8 +5,12 @@ export const statKeys: StatKey[] = ["points", "goals", "assists", "yellow", "red
 export type PlayerSnapshot = Record<StatKey, number> & { rank: number };
 
 /** Posição no ranking geral (ordenado por pontos, maior primeiro). */
+/** Desempate: pontos → frequência → quem já estava na frente antes. */
+export function compareRanking(a: Player, b: Player): number {
+  return b.points - a.points || b.attendance - a.attendance || (a.previous?.rank ?? 9999) - (b.previous?.rank ?? 9999);
+}
 export function rankOf(players: Player[], id: number): number {
-  const sorted = [...players].sort((a, b) => b.points - a.points);
+  const sorted = [...players].sort(compareRanking);
   return sorted.findIndex((p) => p.id === id) + 1;
 }
 
@@ -20,4 +24,10 @@ export function withPreviousSnapshots(oldPlayers: Player[], newPlayers: Player[]
     for (const k of statKeys) snap[k] = old[k];
     return { ...p, previous: snap };
   });
+}
+
+/** Ids dos líderes atuais: pontos (coroa), gols (chama) e assistências (cartola). */
+export function leaderIds(players: Player[]) {
+  const top = (k: "goals" | "assists") => [...players].sort((a, b) => b[k] - a[k] || compareRanking(a, b))[0]?.id;
+  return { points: [...players].sort(compareRanking)[0]?.id, goals: top("goals"), assists: top("assists") };
 }

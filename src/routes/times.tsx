@@ -51,9 +51,9 @@ function Teams() {
             <span /> TODO SÁBADO, UMA NOVA HISTÓRIA
           </div>
           <h1>
-            Os times. <span>O nosso jogo.</span>
+            Os times.
           </h1>
-          <p>Os encontros, os confrontos e quem esteve em campo.</p>
+          <p>As tiradas, os confrontos e quem esteve em campo.</p>
         </div>
         {direction && (
           <div className="admin-toolbar">
