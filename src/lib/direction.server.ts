@@ -20,4 +20,10 @@ export async function checkPassword(password:string,hash:string|null){
  const initial=process.env['SITE_PASSWORD'];if(!initial)throw new Error('Senha inicial não configurada');
  const salt='fairplay-initial';return timingSafeEqual(await derive(password,salt),await derive(initial,salt));
 }
-export async function requireDirection(){const s=await session();const config=await settings();if(s.data.version!==config.session_version)throw new Error('Entre no Modo Direção para alterar informações');return {s,config};}
+export async function requireDirection(token?:string){
+ const s=await session();const config=await settings();
+ if(s.data.version===config.session_version)return {s,config};
+ const {checkDirectionToken}=await import('./direction-token');
+ if(checkDirectionToken(token,config.session_version))return {s,config};
+ throw new Error('Entre no Modo Direção para alterar informações');
+}
