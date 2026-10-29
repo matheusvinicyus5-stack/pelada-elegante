@@ -20,7 +20,7 @@ import { positionNames, type Player } from "@/lib/football";
 import { useFootballAdmin } from "./football-admin-context";
 import { AttendanceDisplay } from "./attendance";
 import { cn } from "@/lib/utils";
-import { rankOf } from "@/lib/player-changes";
+import { rankOf, leaderIds } from "@/lib/player-changes";
 import fairPlayLogo from "@/assets/amigos-fair-play-logo.jpeg.asset.json";
 
 export function SiteHeader() {
@@ -109,9 +109,10 @@ export function PlayerAvatar({ player, large = false }: { player: Player; large?
 }
 export function Leaders({ onSelect }: { onSelect: (p: Player) => void }) {
   const { players } = useFootball();
-  const pointsLeader = [...players].sort((a, b) => b.points - a.points)[0];
-  const goalLeader = [...players].sort((a, b) => b.goals - a.goals)[0];
-  const assistLeader = [...players].sort((a, b) => b.assists - a.assists)[0];
+  const ids = leaderIds(players);
+  const pointsLeader = players.find((p) => p.id === ids.points);
+  const goalLeader = players.find((p) => p.id === ids.goals);
+  const assistLeader = players.find((p) => p.id === ids.assists);
   if (!pointsLeader || !goalLeader || !assistLeader) return null;
   const items = [
     { title: "SEGUE O LÍDER", p: pointsLeader, value: pointsLeader.points, unit: "pontos", icon: Crown, tone: "gold" },
@@ -180,12 +181,7 @@ export function PlayerDialog({ player, onClose }: { player: Player | null; onClo
               <PlayerAvatar player={player} large />
               <DialogTitle className="profile-name">{player.name}</DialogTitle>
               <DialogDescription>{positionNames[player.position]}</DialogDescription>
-              {player.name === "JP" && (
-                <div className="profile-award">
-                  <Crown size={15} />
-                  Segue o Líder
-                </div>
-              )}
+              <LeaderBadges player={player} players={players} labels />
               <div className="profile-stats">
                 {[
                   [player.points, "Pontos"],
@@ -322,5 +318,33 @@ export function TopHat({ size = 24, className, ...props }: SVGProps<SVGSVGElemen
       <path d="M3 16c0 2.2 4 4 9 4s9-1.8 9-4c0-.8-1-1.4-2.5-1.8" />
       <path d="M5.5 14.2C4 14.6 3 15.2 3 16" />
     </svg>
+  );
+}
+
+export function LeaderBadges({ player, players, labels = false }: { player: Player; players: Player[]; labels?: boolean }) {
+  const ids = leaderIds(players);
+  const items = [
+    ids.points === player.id && { key: "gold", Icon: Crown, label: "Segue o Líder" },
+    ids.goals === player.id && { key: "coral", Icon: Flame, label: "O Matador" },
+    ids.assists === player.id && { key: "mint", Icon: TopHat, label: "O Garçom" },
+  ].filter(Boolean) as { key: string; Icon: typeof Crown; label: string }[];
+  if (!items.length) return null;
+  if (!labels)
+    return (
+      <span className="leader-icons">
+        {items.map(({ key, Icon, label }) => (
+          <Icon key={key} size={13} className={`leader-icon ${key}`} aria-label={label} />
+        ))}
+      </span>
+    );
+  return (
+    <div className="profile-awards">
+      {items.map(({ key, Icon, label }) => (
+        <div key={key} className={`profile-award ${key}`}>
+          <Icon size={15} />
+          {label}
+        </div>
+      ))}
+    </div>
   );
 }

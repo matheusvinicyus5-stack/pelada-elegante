@@ -354,7 +354,6 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                     <option value="AT">Atacante</option>
                     <option value="G">Goleiro</option>
                     <option value="ZG">Zagueiro</option>
-                    <option value="DF">Defensor</option>
                     <option value="LAT">Lateral</option>
                   </select>
                 </label>

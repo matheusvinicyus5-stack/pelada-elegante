@@ -2111,3 +2111,19 @@ h1 > span {
 .change-row em { font-style: normal; font-weight: 700; margin-left: 0.5rem; font-size: 0.75rem; }
 .change-row em.up { color: var(--primary); }
 .change-row em.down { color: var(--destructive); }
+
+/* Tabela em largura total, "Dentro de campo" abaixo */
+.stats-layout { display: block !important; }
+.stats-sidebar { margin-top: 32px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: start; }
+.stats-sidebar > .section-heading { grid-column: 1 / -1; margin-bottom: 0; }
+.stats-sidebar .season-overview, .stats-sidebar .fairplay-note { margin: 0; }
+.stats-sidebar .match-preview { grid-row: auto; }
+@media (max-width: 760px) { .stats-sidebar { grid-template-columns: 1fr; } }
+.fairplay-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex-shrink: 0; display: block !important; }
+.athlete-name { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.leader-icons { display: inline-flex; gap: 3px; flex-shrink: 0; }
+.leader-icon.gold, .profile-award.gold { color: var(--gold); }
+.leader-icon.coral, .profile-award.coral { color: var(--coral); }
+.leader-icon.mint, .profile-award.mint { color: var(--mint); }
+.profile-awards { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.athlete-col { min-width: 190px; }
