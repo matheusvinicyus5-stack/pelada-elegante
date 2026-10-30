@@ -17,3 +17,7 @@
 - [ ] Mostrar frequência em cinco partes com os cinco últimos sábados e estados de presença.
 - [ ] Permitir à Direção registrar e corrigir presenças preservando a base importada.
 - [ ] Testar cálculo, salvamento e apresentação da frequência.
+
+- [ ] Concluir armazenamento, renovação e limpeza do acesso da Direção.
+- [ ] Corrigir nomes dos times no último confronto.
+- [ ] Limpar capitães ao excluir jogadores e testar.
