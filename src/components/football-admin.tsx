@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import { PlayerAvatar } from "@/components/football";
 import { useFootball } from "@/components/football-state";
 import { enterDirection, exitDirection, changeDirectionPassword } from "@/lib/football.functions";
+import { setDirectionToken, clearDirectionToken, getDirectionToken } from "@/lib/direction-token-storage";
 import { AttendanceEditor } from "@/components/attendance";
 import type { Player, Match } from "@/lib/football";
 import { AdminContext, type AdminActions } from "./football-admin-context";
@@ -143,6 +144,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
       const result = await login({ data: { password } });
       form.reset();
       if (!result.ok) throw new Error("Senha incorreta");
+      if (result.token) setDirectionToken(result.token);
       setActive(true);
       setLoginOpen(false);
     });
@@ -217,6 +219,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
     logout: () =>
       run(async () => {
         await logout();
+        clearDirectionToken();
         setActive(false);
         setPlayer(null);
         setMatch(null);
@@ -262,7 +265,8 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
               const f = new FormData(form);
               run(async () => {
                 if (f.get("password") !== f.get("confirm")) throw new Error("As novas senhas não coincidem");
-                await change({ data: { current: String(f.get("current")), password: String(f.get("password")) } });
+                const result = await change({ data: { current: String(f.get("current")), password: String(f.get("password")), token: getDirectionToken() } });
+                setDirectionToken(result.token);
                 form.reset();
                 setMessage("Senha alterada. Os outros acessos foram encerrados.");
               });
@@ -981,6 +985,8 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                           ...m,
                           teamA: m.teamA.filter((id) => id !== deleting.id),
                           teamB: m.teamB.filter((id) => id !== deleting.id),
+                          captainA: m.captainA === deleting.id ? undefined : m.captainA,
+                          captainB: m.captainB === deleting.id ? undefined : m.captainB,
                         })),
                 });
                 setDeleting(null);

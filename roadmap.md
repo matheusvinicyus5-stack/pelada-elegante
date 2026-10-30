@@ -3,7 +3,7 @@
 - [x] Alinhar eventos do Time Azul à esquerda e do Time Vermelho à direita na arte, com margens iguais, e conferir a imagem.
 - [x] Alinhar os números aos respectivos escudos na arte do placar e verificar a imagem.
 - [x] Adicionar prévia e download da arte de placar para o feed (1080 × 1350) e verificar a imagem exportada.
-- [ ] Corrigir perda de acesso da Direção ao salvar partidas e verificar persistência.
+- [x] Corrigir perda de acesso da Direção ao salvar partidas e verificar persistência.
 - [x] Adaptar a apresentação de Times à referência, com placar e eventos por lado sem minutagem.
 - [x] Construir estatísticas com filtros, classificação e perfil dos atletas.
 - [x] Construir Times com histórico de sábados e escalações de demonstração.
@@ -14,6 +14,10 @@
 - [x] Substituir a aba Direção por login e menu administrativo.
 - [x] Disponibilizar edição de jogadores em Estatísticas e gestão de confrontos em Times.
 - [x] Verificar login, edição nas abas e saída.
-- [ ] Mostrar frequência em cinco partes com os cinco últimos sábados e estados de presença.
-- [ ] Permitir à Direção registrar e corrigir presenças preservando a base importada.
-- [ ] Testar cálculo, salvamento e apresentação da frequência.
+- [x] Mostrar frequência em cinco partes com os cinco últimos sábados e estados de presença.
+- [x] Permitir à Direção registrar e corrigir presenças preservando a base importada.
+- [x] Testar cálculo, salvamento e apresentação da frequência.
+
+- [x] Concluir armazenamento, renovação e limpeza do acesso da Direção.
+- [x] Corrigir nomes dos times no último confronto.
+- [x] Limpar capitães ao excluir jogadores e testar.

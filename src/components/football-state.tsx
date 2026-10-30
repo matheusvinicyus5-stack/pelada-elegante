@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { queryOptions, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { getFootball, getDirectionStatus, saveFootball } from '@/lib/football.functions';
-import { getDirectionToken } from '@/lib/direction-token.client';
+import { getDirectionToken } from '@/lib/direction-token-storage';
 import { footballSchema } from '@/lib/football-schema';
 import type { Player, Match } from '@/lib/football';
 type FootballData = {players:Player[];matches:Match[]};

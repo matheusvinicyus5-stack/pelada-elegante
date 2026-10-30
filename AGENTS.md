@@ -13,6 +13,7 @@
 - Share navigation, avatars, player profiles and football identity in a common football UI module so statistics and team pages remain consistent.
 - Store the live roster and match history in Cloud, retaining the original import only as an archive and labeling demonstration matches; no writes go to the original site.
 - Authorize every write with a server-verified encrypted shared-password session, using versioned sessions and a private password hash so visitors remain read-only and password changes revoke older access.
+- Keep the version-signed Direction fallback token in sessionStorage, refreshing it on password change and clearing it on logout; browser storage helpers use SSR-safe filenames and guarded function bodies so iframe access also works after deployment.
 - Share Cloud football data through one query-backed provider with revision checks to prevent stale edits from overwriting newer changes.
 
 - Reuse one shared admin-dialog provider for login and editing inside the public statistics/team pages, so administration never becomes a separate navigation tab.
