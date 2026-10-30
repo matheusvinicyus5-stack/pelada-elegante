@@ -55,16 +55,16 @@ function Teams() {
           </h1>
           <p>As tiradas, os confrontos e quem esteve em campo.</p>
         </div>
-        {direction && (
-          <div className="admin-toolbar">
-            <LineupArt match={match} players={players}/>
-            <MatchArt match={match} players={players}/>
+        <div className="admin-toolbar">
+          <LineupArt match={match} players={players}/>
+          <MatchArt match={match} players={players}/>
+          {direction && (
             <Button size="sm" onClick={admin.addMatch}>
               <Plus size={16} />
               Adicionar confronto
             </Button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       <div className="teams-date-bar">
         <div>
