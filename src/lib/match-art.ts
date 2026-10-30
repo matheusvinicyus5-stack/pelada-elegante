@@ -73,39 +73,40 @@ export async function renderMatchArt(canvas: HTMLCanvasElement, match: Match, pl
   circleLogo(110, 106, 94);
   text("AMIGOS FAIR PLAY", 180, 104, 44, foreground, 770, true);
   text("FUTEBOL ENTRE AMIGOS", 182, 137, 18, muted);
-  text(match.example ? "CONFRONTO DE EXEMPLO" : "RESULTADO FINAL", 64, 225, 20, color("--primary"));
-  text("FIM DE JOGO", 60, 345, 116, foreground, 960, true);
-  text(match.date, 64, 398, 26, muted);
-  shield(250, 534, "A");shield(830, 534, "B");
-  text("TIME AZUL", 250, 669, 42, foreground, 400, true, "center");
-  text("TIME VERMELHO", 830, 669, 42, foreground, 400, true, "center");
-  text(String(match.scoreA), 250, 884, 220, foreground, 390, true, "center");
-  text("×", 540, 848, 64, muted, 110, false, "center");
-  text(String(match.scoreB), 830, 884, 220, foreground, 390, true, "center");
-  ctx.fillStyle = color("--border");ctx.fillRect(64, 926, 952, 2);
+  text(match.example ? "CONFRONTO DE EXEMPLO" : "RESULTADO FINAL", 64, 200, 24, color("--primary"));
+  text("FIM DE JOGO", 60, 290, 92, foreground, 960, true);
+  text(match.date, 64, 336, 28, muted);
+  shield(250, 450, "A");shield(830, 450, "B");
+  text("TIME AZUL", 250, 585, 44, foreground, 400, true, "center");
+  text("TIME VERMELHO", 830, 585, 44, foreground, 400, true, "center");
+  text(String(match.scoreA), 250, 760, 190, foreground, 390, true, "center");
+  text("×", 540, 730, 64, muted, 110, false, "center");
+  text(String(match.scoreB), 830, 760, 190, foreground, 390, true, "center");
+  ctx.fillStyle = color("--border");ctx.fillRect(64, 800, 952, 2);
   const groups = [matchArtGoals(match, players, "A"), matchArtGoals(match, players, "B")];
   const maxRows = Math.max(...groups.map((rows) => rows.reduce((n, row) => n + (row.assist ? 2 : 1), 0)), 1);
   if (maxRows > 14) throw new Error("Esta partida tem muitos registros para caberem de forma legível em uma única arte.");
-  const lineHeight = Math.min(39, 238 / maxRows);
-  const fontSize = Math.min(25, lineHeight - 3);
+  const area = 400;
+  const lineHeight = Math.min(54, area / maxRows);
+  const fontSize = Math.min(38, Math.max(22, lineHeight - 8));
   groups.forEach((rows, team) => {
     const x = team === 0 ? 64 : 1016;
     const align: CanvasTextAlign = team === 0 ? "left" : "right";
-    const width = 436;
-    text("GOLS", x, 973, 16, muted, width, false, align);
-    let y = 1015;
-    if (!rows.length) text("Nenhum gol registrado", x, y, 20, muted, width, false, align);
+    const width = 446;
+    text("GOLS", x, 852, 22, muted, width, false, align);
+    let y = 905;
+    if (!rows.length) text("Nenhum gol registrado", x, y, 28, muted, width, false, align);
     rows.forEach((row) => {
       text(`${row.scorer}  ⚽${row.count > 1 ? ` ×${row.count}` : ""}`, x, y, fontSize, foreground, width, false, align);
       y += lineHeight;
       if (row.assist) {
-        text(`Assistência · ${row.assist}`, x, y, Math.max(14, fontSize - 4), muted, width, false, align);
-        y += lineHeight;
+        text(`Assist. · ${row.assist}`, x, y - lineHeight * 0.15, Math.max(20, fontSize - 8), muted, width, false, align);
+        y += lineHeight * 0.85;
       }
     });
   });
-  ctx.fillStyle = color("--border");ctx.fillRect(64, 1270, 952, 2);
-  text("DENTRO DE CAMPO, RIVAIS. FORA DELE, AMIGOS.", 540, 1313, 17, muted, 952, false, "center");
+  ctx.fillStyle = color("--border");ctx.fillRect(64, 1280, 952, 2);
+  text("DENTRO DE CAMPO, RIVAIS. FORA DELE, AMIGOS.", 540, 1320, 20, muted, 952, false, "center");
 }
 
 export function matchArtBlob(canvas: HTMLCanvasElement): Promise<Blob> {
