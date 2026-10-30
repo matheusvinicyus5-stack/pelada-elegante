@@ -2127,3 +2127,14 @@ h1 > span {
 .leader-icon.mint, .profile-award.mint { color: var(--mint); }
 .profile-awards { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
 .athlete-col { min-width: 190px; }
+
+.gold-member-badge{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .7rem;border-radius:999px;font-size:.72rem;font-weight:800;letter-spacing:.06em;white-space:nowrap;color:var(--background);background:linear-gradient(135deg,oklch(0.88 0.14 90),oklch(0.72 0.15 75));box-shadow:0 0 12px oklch(0.8 0.15 85 / .35)}
+.attendance-checklist{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.attendance-check{display:flex;flex-direction:column;align-items:center;gap:.3rem;padding:.5rem .2rem;border:1px solid var(--border);border-radius:.6rem;cursor:pointer;font-size:.78rem}
+.attendance-check.checked{border-color:var(--primary);background:color-mix(in oklab,var(--primary) 15%,transparent)}
+.attendance-check input{accent-color:var(--primary);width:18px;height:18px}
+
+.gold-attendance .attendance-segments > span.filled{background:linear-gradient(90deg,oklch(0.78 0.11 85),oklch(0.68 0.1 75))}
+.gold-attendance .attendance-top > strong{color:oklch(0.8 0.11 85);letter-spacing:.04em}
+.gold-attendance-note{margin-top:6px;font-size:10px;color:oklch(0.78 0.08 85);letter-spacing:.03em;white-space:nowrap}
+.profile-main > .gold-attendance .gold-attendance-note{font-size:12px}
