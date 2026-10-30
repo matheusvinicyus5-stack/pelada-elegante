@@ -81,15 +81,16 @@ function formatMatchDate(value: string) {
     short: `${String(day).padStart(2, "0")} ${shortMonthNames[month - 1]}`,
   };
 }
-function cropImageToSquare(src: string, x: number, y: number): Promise<string> {
+function cropImageToSquare(src: string, x: number, y: number, zoom = 1): Promise<string> {
   return new Promise((resolve, reject) => {
     const image = new Image();
 
     image.onload = () => {
       const outputSize = 512;
-      const side = Math.min(image.naturalWidth, image.naturalHeight);
-      const sourceX = (image.naturalWidth - side) * (x / 100);
-      const sourceY = (image.naturalHeight - side) * (y / 100);
+      const base = Math.min(image.naturalWidth, image.naturalHeight);
+      const side = base / zoom;
+      const sourceX = (image.naturalWidth - base) * (x / 100) + (base - side) * (x / 100);
+      const sourceY = (image.naturalHeight - base) * (y / 100) + (base - side) * (y / 100);
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
 
@@ -112,7 +113,7 @@ function cropImageToSquare(src: string, x: number, y: number): Promise<string> {
 
 export function FootballAdminProvider({ children }: { children: ReactNode }) {
   const { players, matches, active, setActive, save } = useFootball();
-  const [photoDraft, setPhotoDraft] = useState<{ src: string; x: number; y: number } | null>(null);
+  const [photoDraft, setPhotoDraft] = useState<{ src: string; x: number; y: number; zoom?: number } | null>(null);
   const cropDrag = useRef<{ pointerX: number; pointerY: number; x: number; y: number } | null>(null);
   const login = useServerFn(enterDirection);
   const logout = useServerFn(exitDirection);
@@ -407,7 +408,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
                       reader.onload = () => {
                         if (typeof reader.result === "string") {
-                          setPhotoDraft({ src: reader.result, x: 50, y: 25 });
+                          setPhotoDraft({ src: reader.result, x: 50, y: 25, zoom: 1 });
                         }
                       };
 
@@ -439,8 +440,8 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                         const rect = e.currentTarget.getBoundingClientRect();
                         setPhotoDraft({
                           ...photoDraft,
-                          x: Math.max(0, Math.min(100, drag.x - ((e.clientX - drag.pointerX) / rect.width) * 100)),
-                          y: Math.max(0, Math.min(100, drag.y - ((e.clientY - drag.pointerY) / rect.height) * 100)),
+                          x: Math.max(0, Math.min(100, drag.x - ((e.clientX - drag.pointerX) / rect.width / (photoDraft.zoom ?? 1)) * 100)),
+                          y: Math.max(0, Math.min(100, drag.y - ((e.clientY - drag.pointerY) / rect.height / (photoDraft.zoom ?? 1)) * 100)),
                         });
                       }}
                       onPointerUp={() => {
@@ -448,6 +449,10 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                       }}
                       onPointerCancel={() => {
                         cropDrag.current = null;
+                      }}
+                      onWheel={(e) => {
+                        const next = Math.max(1, Math.min(4, (photoDraft.zoom ?? 1) * Math.exp(-e.deltaY * 0.0015)));
+                        setPhotoDraft({ ...photoDraft, zoom: next });
                       }}
                       style={{
                         width: 220,
@@ -457,6 +462,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                         touchAction: "none",
                         cursor: "grab",
                         border: "2px solid var(--border)",
+                        overscrollBehavior: "contain",
                       }}
                     >
                       <img
@@ -468,11 +474,29 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                           height: "100%",
                           objectFit: "cover",
                           objectPosition: `${photoDraft.x}% ${photoDraft.y}%`,
+                          transform: `scale(${photoDraft.zoom ?? 1})`,
+                          transformOrigin: `${photoDraft.x}% ${photoDraft.y}%`,
                           pointerEvents: "none",
                           userSelect: "none",
                         }}
                       />
                     </div>
+
+                    <label className="mt-3 flex items-center gap-3 text-sm" style={{ maxWidth: 260 }}>
+                      <span>Zoom</span>
+                      <Button type="button" variant="ghost" size="sm" aria-label="Diminuir zoom" onClick={() => setPhotoDraft({ ...photoDraft, zoom: Math.max(1, (photoDraft.zoom ?? 1) - 0.25) })}>−</Button>
+                      <input
+                        type="range"
+                        min={1}
+                        max={4}
+                        step={0.05}
+                        value={photoDraft.zoom ?? 1}
+                        onChange={(e) => setPhotoDraft({ ...photoDraft, zoom: Number(e.target.value) })}
+                        aria-label="Zoom da foto"
+                        style={{ flex: 1, accentColor: "var(--primary)" }}
+                      />
+                      <Button type="button" variant="ghost" size="sm" aria-label="Aumentar zoom" onClick={() => setPhotoDraft({ ...photoDraft, zoom: Math.min(4, (photoDraft.zoom ?? 1) + 0.25) })}>+</Button>
+                    </label>
 
                     <div className="mt-2 flex gap-2">
                       <Button
@@ -480,7 +504,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                         onClick={async () => {
                           if (!player) return;
                           try {
-                            const photo = await cropImageToSquare(photoDraft.src, photoDraft.x, photoDraft.y);
+                            const photo = await cropImageToSquare(photoDraft.src, photoDraft.x, photoDraft.y, photoDraft.zoom ?? 1);
                             setPlayer({ ...player, photo });
                             setPhotoDraft(null);
                           } catch {
@@ -501,6 +525,9 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                 {player.photo && (
                   <div className="col-span-2 flex items-center gap-3">
                     <PlayerAvatar player={player} />
+                    <Button type="button" variant="secondary" onClick={() => setPhotoDraft({ src: player.photo ?? "", x: 50, y: 50, zoom: 1 })}>
+                      Ajustar zoom
+                    </Button>
                     <Button type="button" variant="ghost" onClick={() => setPlayer({ ...player, photo: "" })}>
                       Remover foto
                     </Button>
