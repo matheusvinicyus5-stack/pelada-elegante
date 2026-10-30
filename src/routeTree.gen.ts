@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DirecaoRouteImport } from './routes/direcao'
+import { Route as SociosRouteImport } from './routes/socios'
 import { Route as TimesRouteImport } from './routes/times'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const DirecaoRoute = DirecaoRouteImport.update({
   path: '/direcao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SociosRoute = SociosRouteImport.update({
+  id: '/socios',
+  path: '/socios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TimesRoute = TimesRouteImport.update({
   id: '/times',
   path: '/times',
@@ -32,30 +38,34 @@ const TimesRoute = TimesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/direcao': typeof DirecaoRoute
+  '/socios': typeof SociosRoute
   '/times': typeof TimesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/direcao': typeof DirecaoRoute
+  '/socios': typeof SociosRoute
   '/times': typeof TimesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/direcao': typeof DirecaoRoute
+  '/socios': typeof SociosRoute
   '/times': typeof TimesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/direcao' | '/times'
+  fullPaths: '/' | '/direcao' | '/socios' | '/times'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/direcao' | '/times'
-  id: '__root__' | '/' | '/direcao' | '/times'
+  to: '/' | '/direcao' | '/socios' | '/times'
+  id: '__root__' | '/' | '/direcao' | '/socios' | '/times'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DirecaoRoute: typeof DirecaoRoute
+  SociosRoute: typeof SociosRoute
   TimesRoute: typeof TimesRoute
 }
 
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DirecaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/socios': {
+      id: '/socios'
+      path: '/socios'
+      fullPath: '/socios'
+      preLoaderRoute: typeof SociosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/times': {
       id: '/times'
       path: '/times'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DirecaoRoute: DirecaoRoute,
+  SociosRoute: SociosRoute,
   TimesRoute: TimesRoute,
 }
 export const routeTree = rootRouteImport
