@@ -5,6 +5,7 @@ export type Player = {
   number?: number | undefined;
   name: string;
   position: string;
+  membership?: "ouro" | "prata" | undefined;
   points: number;
   goals: number;
   assists: number;

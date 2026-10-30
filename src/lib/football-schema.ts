@@ -7,6 +7,7 @@ export const playerSchema = z
     number: count.optional(),
     name: z.string().trim().min(1).max(100),
     position: z.enum(["MC", "AT", "G", "ZG", "DF", "LAT"]),
+    membership: z.enum(["ouro", "prata"]).optional(),
     points: count,
     goals: count,
     assists: count,
