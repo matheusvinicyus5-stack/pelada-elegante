@@ -23,3 +23,10 @@ export function recordAttendance<T extends AttendancePlayer>(player: T, date: st
  return {...player,attendanceBase:base,attendanceRecords:records,attendance:attendanceValue(base,records)};
 }
 export function shortDate(date: string) {return `${date.slice(8,10)}/${date.slice(5,7)}`;}
+
+export function attendanceWindow(base: number, records: AttendanceRecord[]): boolean[] {
+  const presences = Math.max(0, Math.min(5, Math.round(base / 20)));
+  const virtual: boolean[] = Array.from({ length: 5 }, (_, i) => i >= 5 - presences);
+  const real = [...records].sort((a, b) => a.date.localeCompare(b.date)).map(record => record.status === 'present');
+  return [...virtual, ...real].slice(-5);
+}
