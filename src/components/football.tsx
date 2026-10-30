@@ -1,6 +1,7 @@
 import type { SVGProps } from "react";
 import { Link } from "@tanstack/react-router";
 import {
+  Medal,
   ArrowUpRight,
   ChartNoAxesColumnIncreasing,
   Users,
@@ -46,6 +47,10 @@ export function SiteHeader() {
           <Link to="/times" activeProps={{ className: "nav-active" }}>
             <Users size={17} />
             Times
+          </Link>
+          <Link to="/socios" activeProps={{ className: "nav-active" }}>
+            <Medal size={17} />
+            Sócios
           </Link>
         </nav>
         <div className="header-admin">

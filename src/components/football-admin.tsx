@@ -361,6 +361,19 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                     <option value="LAT">Lateral</option>
                   </select>
                 </label>
+                <label className="col-span-2">
+                  Sócio
+                  <select
+                    value={player.membership ?? ""}
+                    onChange={(e) =>
+                      setPlayer({ ...player, membership: (e.target.value || undefined) as Player["membership"] })
+                    }
+                  >
+                    <option value="">Não é sócio</option>
+                    <option value="ouro">🥇 Sócio Ouro</option>
+                    <option value="prata">🥈 Sócio Prata</option>
+                  </select>
+                </label>
                 {fields.map(([key, label]) => (
                   <label key={key}>
                     {label}
