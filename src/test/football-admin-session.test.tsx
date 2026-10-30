@@ -43,7 +43,7 @@ describe('Direction session and captain removal', () => {
   it('forwards the token when changing the password and replaces it', async () => {
     mocks.active = true; setDirectionToken('1.signed'); mount(); fireEvent.click(screen.getByText('Senha'));
     fireEvent.change(screen.getByLabelText('Senha atual'), { target: { value: 'old-password' } });
-    fireEvent.change(screen.getByLabelText('Nova senha'), { target: { value: 'new-password' } });
+    fireEvent.change(screen.getByLabelText(/^Nova senha/), { target: { value: 'new-password' } });
     fireEvent.change(screen.getByLabelText('Confirmar nova senha'), { target: { value: 'new-password' } });
     fireEvent.click(screen.getByRole('button', { name: 'Alterar senha' }));
     await waitFor(() => expect(getDirectionToken()).toBe('2.signed'));
