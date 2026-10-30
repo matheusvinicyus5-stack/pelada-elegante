@@ -8,6 +8,11 @@ export const playerSchema = z
     name: z.string().trim().min(1).max(100),
     position: z.enum(["MC", "AT", "G", "ZG", "DF", "LAT"]),
     membership: z.enum(["ouro", "prata"]).optional(),
+    medicalLeave: z.boolean().optional(),
+    medicalLeavePeriods: z
+      .array(z.object({ start: z.string().regex(/^\d{4}-\d{2}-\d{2}$/), end: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() }))
+      .max(500)
+      .optional(),
     points: count,
     goals: count,
     assists: count,
@@ -56,7 +61,7 @@ export const playerSchema = z
       ctx.addIssue({ code: "custom", message: "Sábado repetido" });
     if (
       player.attendanceRecords !== undefined &&
-      (player.attendanceBase === undefined || attendanceValue(player.attendanceBase, records) !== player.attendance)
+      (player.attendanceBase === undefined || attendanceValue(player.attendanceBase, records, player.medicalLeavePeriods) !== player.attendance)
     )
       ctx.addIssue({ code: "custom", message: "Frequência não corresponde às presenças" });
   });

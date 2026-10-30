@@ -12,6 +12,8 @@ export type Player = {
   yellow: number;
   red: number;
   blue: number;
+  medicalLeave?: boolean | undefined;
+  medicalLeavePeriods?: Array<{ start: string; end?: string | undefined }> | undefined;
   attendance: number;
   attendanceBase?: number | undefined;
   attendanceRecords?: AttendanceRecord[] | undefined;
