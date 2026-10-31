@@ -2171,3 +2171,7 @@ h1 > span {
 @media (prefers-reduced-motion:reduce) {
  *, *::before, *::after { animation:none!important;transition:none!important;scroll-behavior:auto!important; }
 }
+
+.photo-lightbox { background:var(--background);isolation:isolate; }
+.photo-lightbox .photo-close { z-index:1; }
+[data-slot="dialog-overlay"], [role="dialog"] { animation-duration:180ms; }

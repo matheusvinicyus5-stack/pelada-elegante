@@ -17,6 +17,13 @@ export const exitDirection=createServerFn({method:'POST'}).handler(async()=>{con
 export const saveFootball=createServerFn({method:'POST'}).inputValidator(z.object({payload:footballSchema,revision:z.number().int().positive(),token:z.string().optional()})).handler(async({data})=>{
  const {requireDirection}=await import('./direction.server');await requireDirection(data.token);
  const {supabaseAdmin}=await import('@/integrations/supabase/client.server');
+ // Reject new embedded images even when a caller bypasses the upload UI.
+ const {data:current,error:readError}=await supabaseAdmin.from('football_data').select('payload').eq('id',1).single();
+ if(readError || !current) throw new Error('Não foi possível verificar as fotos anteriores.');
+ const existing=footballSchema.parse(current.payload);
+ for(const player of data.payload.players){
+  if(player.photo?.startsWith('data:image/') && existing.players.find(p=>p.id===player.id)?.photo!==player.photo) throw new Error('Envie a foto como arquivo antes de salvar.');
+ }
  const {data:row,error}=await supabaseAdmin.from('football_data').update({payload:data.payload as Json,revision:data.revision+1}).eq('id',1).eq('revision',data.revision).select('revision').maybeSingle();
  if(error)throw new Error('Não foi possível salvar');if(!row)throw new Error('Os dados mudaram em outra janela. Atualize a página antes de salvar.');return {revision:row.revision};
 });
