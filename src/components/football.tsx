@@ -298,7 +298,7 @@ export function PlayerChanges({ player, players }: { player: Player; players: Pl
               {fmt(k, prev[k])} → <strong>{fmt(k, player[k])}</strong>
               <em className={d > 0 ? "up" : "down"}>
                 {d > 0 ? "+" : ""}
-                {k === "attendance" ? `${d}%` : d}
+                {d}
               </em>
             </span>
           </div>

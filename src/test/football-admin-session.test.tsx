@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
 }));
 vi.mock('@tanstack/react-start', () => ({ useServerFn: (fn: unknown) => fn }));
 vi.mock('@/lib/football.functions', () => ({ enterDirection: mocks.login, exitDirection: mocks.logout, changeDirectionPassword: mocks.change }));
+vi.mock('@/lib/player-photo.functions', () => ({ uploadPlayerPhoto: vi.fn() }));
 vi.mock('@/components/football-state', () => ({ useFootball: () => ({ ...mocks }) }));
 vi.mock('@/components/football', () => ({ PlayerAvatar: () => null }));
 
