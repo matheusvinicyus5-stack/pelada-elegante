@@ -48,9 +48,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
-        </h1>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">This page didn't load</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back home.
         </p>
@@ -86,11 +84,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Futebol entre amigos. Estatísticas e times da nossa pelada." },
       { property: "og:title", content: "Amigos Fair Play 2026" },
       { property: "og:description", content: "Futebol entre amigos. Estatísticas e times da nossa pelada." },
+      { property: "og:image", content: "https://amigosfairplay.lovable.app/favicon.png" },
+      { property: "og:image:alt", content: "Logo Amigos Fair Play" },
+      { name: "twitter:image", content: "https://amigosfairplay.lovable.app/favicon.png" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -124,9 +128,13 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <FootballProvider><FootballAdminProvider><SiteHeader />
-      <Outlet />
-      <SiteFooter /></FootballAdminProvider></FootballProvider>
+      <FootballProvider>
+        <FootballAdminProvider>
+          <SiteHeader />
+          <Outlet />
+          <SiteFooter />
+        </FootballAdminProvider>
+      </FootballProvider>
     </QueryClientProvider>
   );
 }
