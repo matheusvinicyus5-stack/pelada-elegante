@@ -1,4 +1,11 @@
 # Roadmap
+- [ ] Indicar mudança de ranking e retirar frequência das mudanças no perfil.
+- [ ] Ampliar foto do perfil com fechamento acessível.
+- [ ] Armazenar novas fotos como arquivos e migrar fotos embutidas após verificação.
+- [ ] Suavizar transições respeitando movimento reduzido.
+- [ ] Gerar cartão compartilhável do jogador.
+- [ ] Exportar CSV filtrado e buscar sem acentos.
+- [ ] Verificar fluxos, fotos e telas pequenas/grandes.
 - [x] Aplicar e verificar seleção por time com busca no registro e na edição de escalações após o baba.
 - [x] Alinhar eventos do Time Azul à esquerda e do Time Vermelho à direita na arte, com margens iguais, e conferir a imagem.
 - [x] Alinhar os números aos respectivos escudos na arte do placar e verificar a imagem.
