@@ -2147,3 +2147,27 @@ h1 > span {
 .dm-switch span{display:flex;flex-direction:column;gap:2px}
 .dm-switch small{font-size:11px;color:var(--muted-foreground)}
 .attendance-check:has(input:disabled){opacity:.45;cursor:not-allowed}
+
+/* Consistent profile and navigation feedback */
+.ranking-movement { display:inline-flex; flex:0 0 16px; width:16px; align-items:center; justify-content:center; }
+.ranking-movement.up { color:var(--primary); }
+.ranking-movement.down { color:var(--coral); }
+.ranking-up { transform:rotate(-45deg); }
+.profile-photo-button { width:86px;height:86px;padding:0;margin-top:-42px;position:relative;border-radius:50%;border:4px solid var(--card);outline:1px solid var(--primary); }
+.profile-photo-button .avatar-large { width:100%;height:100%; }
+.photo-lightbox { width:calc(100% - 32px);max-width:760px;max-height:90dvh;padding:44px 16px 16px; }
+.photo-lightbox img { width:100%;height:auto;max-height:calc(90dvh - 120px);object-fit:contain; }
+.photo-close { justify-self:center; }
+.profile-art-actions { display:flex;flex-wrap:wrap;gap:8px; }
+.profile-art-actions > * { flex:1; }
+.filter-toolbar { flex-wrap:wrap; }
+@media (max-width:600px) { .athlete-name { gap:4px; } .profile-art-actions { flex-direction:column; } }
+@media (prefers-reduced-motion:no-preference) {
+ .main-content { animation:page-arrive 180ms ease-out; }
+ .athlete-button, .profile-photo-button, button { transition:background-color 150ms ease, color 150ms ease, opacity 150ms ease; }
+ .athlete-button:hover { color:var(--primary); }
+ button:active { opacity:.85; }
+}
+@media (prefers-reduced-motion:reduce) {
+ *, *::before, *::after { animation:none!important;transition:none!important;scroll-behavior:auto!important; }
+}
