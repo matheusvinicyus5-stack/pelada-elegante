@@ -49,6 +49,7 @@ export const playerSchema = z
         (s) =>
           !s ||
           s.startsWith("/__l5e/assets-v1/") ||
+          /^\/api\/player-photos\/[a-f0-9-]+\.(jpeg|png|webp)$/.test(s) ||
           /^https:\/\//.test(s) ||
           /^data:image\/(png|jpeg|webp);base64,/.test(s),
         "Foto inválida",

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DirecaoRouteImport } from './routes/direcao'
 import { Route as SociosRouteImport } from './routes/socios'
 import { Route as TimesRouteImport } from './routes/times'
+import { Route as ApiPlayerPhotosFileRouteImport } from './routes/api/player-photos/$file'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const TimesRoute = TimesRouteImport.update({
   path: '/times',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPlayerPhotosFileRoute = ApiPlayerPhotosFileRouteImport.update({
+  id: '/api/player-photos/$file',
+  path: '/api/player-photos/$file',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/direcao': typeof DirecaoRoute
   '/socios': typeof SociosRoute
   '/times': typeof TimesRoute
+  '/api/player-photos/$file': typeof ApiPlayerPhotosFileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/direcao': typeof DirecaoRoute
   '/socios': typeof SociosRoute
   '/times': typeof TimesRoute
+  '/api/player-photos/$file': typeof ApiPlayerPhotosFileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,21 @@ export interface FileRoutesById {
   '/direcao': typeof DirecaoRoute
   '/socios': typeof SociosRoute
   '/times': typeof TimesRoute
+  '/api/player-photos/$file': typeof ApiPlayerPhotosFileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/direcao' | '/socios' | '/times'
+  fullPaths:
+    '/' | '/direcao' | '/socios' | '/times' | '/api/player-photos/$file'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/direcao' | '/socios' | '/times'
-  id: '__root__' | '/' | '/direcao' | '/socios' | '/times'
+  to: '/' | '/direcao' | '/socios' | '/times' | '/api/player-photos/$file'
+  id:
+    | '__root__'
+    | '/'
+    | '/direcao'
+    | '/socios'
+    | '/times'
+    | '/api/player-photos/$file'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +83,7 @@ export interface RootRouteChildren {
   DirecaoRoute: typeof DirecaoRoute
   SociosRoute: typeof SociosRoute
   TimesRoute: typeof TimesRoute
+  ApiPlayerPhotosFileRoute: typeof ApiPlayerPhotosFileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +116,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TimesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/player-photos/$file': {
+      id: '/api/player-photos/$file'
+      path: '/api/player-photos/$file'
+      fullPath: '/api/player-photos/$file'
+      preLoaderRoute: typeof ApiPlayerPhotosFileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +131,7 @@ const rootRouteChildren: RootRouteChildren = {
   DirecaoRoute: DirecaoRoute,
   SociosRoute: SociosRoute,
   TimesRoute: TimesRoute,
+  ApiPlayerPhotosFileRoute: ApiPlayerPhotosFileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

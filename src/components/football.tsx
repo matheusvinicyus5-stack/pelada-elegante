@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import { useState, type SVGProps } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   Medal,
@@ -13,6 +13,7 @@ import {
   LockKeyhole,
   LogOut,
   Pencil,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -21,6 +22,8 @@ import { positionNames, type Player } from "@/lib/football";
 import { useFootballAdmin } from "./football-admin-context";
 import { AttendanceDisplay } from "./attendance";
 import { cn } from "@/lib/utils";
+import { PlayerArt } from "./player-art";
+import { profileChangeKeys } from "@/lib/statistics";
 import { rankOf, leaderIds } from "@/lib/player-changes";
 import fairPlayLogo from "@/assets/amigos-fair-play-logo.jpeg.asset.json";
 
@@ -166,12 +169,13 @@ export function Leaders({ onSelect }: { onSelect: (p: Player) => void }) {
 }
 export function PlayerDialog({ player, onClose }: { player: Player | null; onClose: () => void }) {
   const { active, players } = useFootball();
+  const [photoOpen, setPhotoOpen] = useState(false);
   const admin = useFootballAdmin();
   return (
     <Dialog
       open={Boolean(player)}
       onOpenChange={(open) => {
-        if (!open) onClose();
+        if (!open) { setPhotoOpen(false); onClose(); }
       }}
     >
       <DialogContent className="player-dialog">
@@ -183,7 +187,7 @@ export function PlayerDialog({ player, onClose }: { player: Player | null; onClo
               <span className="profile-season">TEMPORADA 2026</span>
             </div>
             <div className="profile-main">
-              <PlayerAvatar player={player} large />
+              {player.photo ? <Button variant="ghost" className="profile-photo-button" aria-label={`Ampliar foto de ${player.name}`} title="Ampliar foto" onClick={(event)=>{event.stopPropagation();setPhotoOpen(true);}}><PlayerAvatar player={player} large /></Button> : <PlayerAvatar player={player} large />}
               <DialogTitle className="profile-name">{player.name}</DialogTitle>
               <DialogDescription>{positionNames[player.position]}</DialogDescription>
               <LeaderBadges player={player} players={players} labels />
@@ -218,6 +222,8 @@ export function PlayerDialog({ player, onClose }: { player: Player | null; onClo
               </div>
               <AttendanceDisplay player={player} />
               <PlayerChanges player={player} players={players} />
+              <PlayerArt player={player}/>
+              {player.photo && <Dialog open={photoOpen} onOpenChange={setPhotoOpen}><DialogContent className="photo-lightbox" aria-describedby={undefined} onClick={event=>event.stopPropagation()}><DialogTitle className="sr-only">Foto de {player.name}</DialogTitle><img src={player.photo} alt={`Foto ampliada de ${player.name}`} onClick={event=>event.stopPropagation()}/><Button variant="secondary" className="photo-close" onClick={()=>setPhotoOpen(false)}><X size={18}/>Fechar foto</Button></DialogContent></Dialog>}
               <>
                 {active && (
                   <Button
@@ -260,12 +266,11 @@ export function PlayerChanges({ player, players }: { player: Player; players: Pl
       ["points", "Pontos"],
       ["goals", "Gols"],
       ["assists", "Assistências"],
-      ["attendance", "Frequência"],
       ["yellow", "Amarelos"],
       ["red", "Vermelhos"],
       ["blue", "Azuis"],
     ] as const
-  ).filter(([k]) => prev[k] !== player[k]);
+  ).filter(([k]) => profileChangeKeys.some(key => key === k) && prev[k] !== player[k]);
   const moved = prev.rank - rank;
   if (!rows.length && !moved) return null;
   const fmt = (k: string, v: number) => (k === "attendance" ? `${v}%` : v);
@@ -292,7 +297,7 @@ export function PlayerChanges({ player, players }: { player: Player; players: Pl
               {fmt(k, prev[k])} → <strong>{fmt(k, player[k])}</strong>
               <em className={d > 0 ? "up" : "down"}>
                 {d > 0 ? "+" : ""}
-                {k === "attendance" ? `${d}%` : d}
+                {d}
               </em>
             </span>
           </div>

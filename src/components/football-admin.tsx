@@ -1,4 +1,5 @@
 import { useServerFn } from "@tanstack/react-start";
+import { uploadPlayerPhoto } from "@/lib/player-photo.functions";
 import { withPreviousSnapshots } from "@/lib/player-changes";
 import { useState, useRef, type ReactNode, type FormEvent } from "react";
 import { LockKeyhole, LogOut, Plus, Pencil, Trash2, Save, ShieldCheck } from "lucide-react";
@@ -84,6 +85,7 @@ function formatMatchDate(value: string) {
 function cropImageToSquare(src: string, x: number, y: number, zoom = 1): Promise<string> {
   return new Promise((resolve, reject) => {
     const image = new Image();
+    image.crossOrigin = "anonymous";
 
     image.onload = () => {
       const outputSize = 512;
@@ -118,6 +120,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
   const login = useServerFn(enterDirection);
   const logout = useServerFn(exitDirection);
   const change = useServerFn(changeDirectionPassword);
+  const uploadPhoto = useServerFn(uploadPlayerPhoto);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -502,17 +505,20 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
                       <Button
                         type="button"
                         onClick={async () => {
-                          if (!player) return;
+                          if (!player || busy) return;
+                          setBusy(true); setError("");
                           try {
                             const photo = await cropImageToSquare(photoDraft.src, photoDraft.x, photoDraft.y, photoDraft.zoom ?? 1);
-                            setPlayer({ ...player, photo });
+                            const result = await uploadPhoto({ data: { image: photo, token: getDirectionToken() } });
+                            const confirmed = new Image(); confirmed.src = result.url; await confirmed.decode();
+                            setPlayer({ ...player, photo: result.url });
                             setPhotoDraft(null);
-                          } catch {
-                            setError("Não foi possível aplicar o corte da foto.");
-                          }
+                          } catch (e) {
+                            setError(e instanceof Error ? e.message : "Não foi possível enviar a foto. Sua foto anterior foi preservada.");
+                          } finally { setBusy(false); }
                         }}
                       >
-                        Aplicar corte
+                        {busy ? "Enviando…" : "Aplicar corte"}
                       </Button>
 
                       <Button type="button" variant="ghost" onClick={() => setPhotoDraft(null)}>

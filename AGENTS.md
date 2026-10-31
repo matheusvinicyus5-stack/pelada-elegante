@@ -21,3 +21,7 @@
 - Keep dated attendance records and an explicit imported baseline in each player payload; replay records chronologically through one shared helper so corrections remain reversible and month boundaries never reset frequency.
 - Render match-result artwork deterministically in the browser using Canvas and shared brand tokens, with the same canvas for preview and PNG export; no AI call or data write is needed.
 - Reuse a shared lineup editor in match registration and roster editing, keeping team selection mutually exclusive so both flows use the same interaction and cannot duplicate players.
+
+- Share pure statistics helpers for accent-insensitive search, point-ranking movement and filtered BOM CSV exports, so sorting never changes historical rank comparisons.
+- Keep new player photos in a private image-only storage bucket, with Direction-verified uploads and immutable same-origin image reads; preserve existing CDN references and verified migration originals.
+- Generate player profile artwork in browser Canvas with semantic brand tokens and prepared blobs so mobile sharing keeps user activation.
