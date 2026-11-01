@@ -15,6 +15,7 @@ import { SiteHeader, SiteFooter } from "@/components/football";
 import { FootballProvider, footballOptions } from "@/components/football-state";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -132,6 +133,7 @@ function RootComponent() {
         <FootballAdminProvider>
           <SiteHeader />
           <Outlet />
+          <Toaster />
           <SiteFooter />
         </FootballAdminProvider>
       </FootballProvider>
