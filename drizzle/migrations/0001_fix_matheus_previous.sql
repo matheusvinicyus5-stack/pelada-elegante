@@ -1,0 +1,1 @@
+update public.football_data set payload = jsonb_set(payload, '{players}', (select jsonb_agg(case when (p->>'id')::int=101 then jsonb_set(jsonb_set(p,'{previous,goals}','29'),'{previous,assists}','11') else p end order by ord) from jsonb_array_elements(payload->'players') with ordinality as t(p,ord))), revision = revision + 1 where id=1;

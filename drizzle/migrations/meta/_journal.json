@@ -8,6 +8,13 @@
       "when": 1791485630499,
       "tag": "0000_direction_data",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793706104351,
+      "tag": "0001_fix_matheus_previous",
+      "breakpoints": true
     }
   ]
 }
