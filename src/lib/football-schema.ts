@@ -40,6 +40,7 @@ export const playerSchema = z
         red: count,
         blue: count,
         attendance: z.number().min(0).max(100),
+        day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
       })
       .optional(),
     photo: z
