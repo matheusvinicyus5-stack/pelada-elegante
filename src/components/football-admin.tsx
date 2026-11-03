@@ -1,6 +1,7 @@
 import { useServerFn } from "@tanstack/react-start";
 import { uploadPlayerPhoto } from "@/lib/player-photo.functions";
-import { withPreviousSnapshots } from "@/lib/player-changes";
+import { withPreviousSnapshots, todayInBrazil } from "@/lib/player-changes";
+import { recentSaturdays } from "@/lib/attendance";
 import { useState, useRef, type ReactNode, type FormEvent } from "react";
 import { LockKeyhole, LogOut, Plus, Pencil, Trash2, Save, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -193,8 +194,7 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
         setMatchStep(1);
         setMatch({
           id: Math.max(0, ...matches.map((m) => m.id)) + 1,
-          date: "",
-          short: "",
+          ...formatMatchDate(recentSaturdays(todayInBrazil()).at(-1) ?? ""),
           scoreA: 0,
           scoreB: 0,
           teamA: [],
@@ -593,8 +593,21 @@ export function FootballAdminProvider({ children }: { children: ReactNode }) {
 
               {matchStep === 1 && (
                 <div className="direction-form-grid">
+                  <div className="sm:col-span-2 space-y-2">
+                    <span className="text-sm">Sábados recentes</span>
+                    <div className="quick-actions">
+                      {[...recentSaturdays(todayInBrazil())].reverse().map((d) => {
+                        const f = formatMatchDate(d);
+                        return (
+                          <Button key={d} type="button" size="sm" variant={dateToInput(match.date) === d ? "default" : "outline"} onClick={() => setMatch({ ...match, date: f.date, short: f.short })}>
+                            {f.short}
+                          </Button>
+                        );
+                      })}
+                    </div>
+                  </div>
                   <label>
-                    Data do jogo
+                    Outra data
                     <Input
                       type="date"
                       required
