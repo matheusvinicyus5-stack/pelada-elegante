@@ -44,3 +44,9 @@ export function attendanceWindow(base: number, allRecords: AttendanceRecord[], p
   const real = [...records].sort((a, b) => a.date.localeCompare(b.date)).map(record => record.status === 'present');
   return [...virtual, ...real].slice(-5);
 }
+
+/** Chamada em lote: marcados = presença, demais = falta naquele sábado. Sócio Ouro e DM ficam intocados. */
+export function applyQuickAttendance<T extends AttendancePlayer & { id: number; membership?: string | undefined }>(players: T[], date: string, presentIds: number[]): T[] {
+  const present = new Set(presentIds);
+  return players.map(p => (p.membership === 'ouro' || p.medicalLeave || inMedicalLeave(date, p.medicalLeavePeriods)) ? p : recordAttendance(p, date, present.has(p.id) ? 'present' : 'absent') as T);
+}

@@ -2,9 +2,8 @@ import type { Player } from "./football";
 
 export type StatKey = "points" | "goals" | "assists" | "yellow" | "red" | "blue" | "attendance";
 export const statKeys: StatKey[] = ["points", "goals", "assists", "yellow", "red", "blue", "attendance"];
-export type PlayerSnapshot = Record<StatKey, number> & { rank: number };
+export type PlayerSnapshot = Record<StatKey, number> & { rank: number; day?: string | undefined };
 
-/** Posição no ranking geral (ordenado por pontos, maior primeiro). */
 /** Desempate: pontos → frequência → quem já estava na frente antes. */
 export function compareRanking(a: Player, b: Player): number {
   return b.points - a.points || b.attendance - a.attendance || (a.previous?.rank ?? 9999) - (b.previous?.rank ?? 9999);
@@ -13,14 +12,21 @@ export function rankOf(players: Player[], id: number): number {
   const sorted = [...players].sort(compareRanking);
   return sorted.findIndex((p) => p.id === id) + 1;
 }
+export function todayInBrazil() {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+}
 
-/** Guarda em `previous` os números anteriores de cada atleta cujas estatísticas mudaram. */
-export function withPreviousSnapshots(oldPlayers: Player[], newPlayers: Player[]): Player[] {
+/**
+ * Guarda em `previous` os números anteriores de cada atleta cujas estatísticas mudaram.
+ * Vários salvamentos no mesmo dia mantêm a base do primeiro, para gols, assistências e pontos somarem juntos.
+ */
+export function withPreviousSnapshots(oldPlayers: Player[], newPlayers: Player[], today: string = todayInBrazil()): Player[] {
   return newPlayers.map((p) => {
     const old = oldPlayers.find((o) => o.id === p.id);
     if (!old) return p;
     if (!statKeys.some((k) => old[k] !== p[k])) return { ...p, previous: old.previous };
-    const snap = { rank: rankOf(oldPlayers, p.id) } as PlayerSnapshot;
+    if (old.previous?.day === today) return { ...p, previous: old.previous };
+    const snap = { rank: rankOf(oldPlayers, p.id), day: today } as PlayerSnapshot;
     for (const k of statKeys) snap[k] = old[k];
     return { ...p, previous: snap };
   });
