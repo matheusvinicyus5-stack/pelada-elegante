@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { compareRanking } from '@/lib/player-changes';
 import { normalizeSearch, rankingMovement, recentForm, statisticsCsv } from '@/lib/statistics';
 import { QuickRound } from '@/components/quick-round';
+import { QuickAttendance } from '@/components/quick-attendance';
 import type { Match } from '@/lib/football';
 import { downloadBlob } from '@/lib/download';
 import fairPlayLogo from '@/assets/amigos-fair-play-logo.jpeg.asset.json';
