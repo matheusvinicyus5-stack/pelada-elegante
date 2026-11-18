@@ -2199,3 +2199,32 @@ h1 > span {
 .quick-summary li{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .quick-summary p{font-size:12px;color:var(--muted-foreground)}
 .quick-checklist label.exempt{opacity:.55;cursor:default}
+
+/* Mobile bottom bar + PWA */
+.mobile-bottom-bar { display: none; }
+.install-help ol { display: grid; gap: 0.75rem; margin: 0.5rem 0 1rem; }
+.install-help li { display: flex; align-items: center; gap: 0.6rem; }
+.install-help li > span { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); font-weight: 700; flex-shrink: 0; }
+.install-help li svg { display: inline; vertical-align: middle; }
+@media (max-width: 768px) {
+  .header-inner nav { display: none !important; }
+  body { padding-bottom: calc(4.25rem + env(safe-area-inset-bottom)); }
+  .mobile-bottom-bar {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+    padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom));
+    background: color-mix(in oklab, var(--background) 78%, transparent);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid var(--border);
+  }
+  .mobile-bottom-bar a {
+    position: relative; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;
+    padding: 0.45rem 0; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+    color: var(--muted-foreground); text-decoration: none; transition: color 0.2s;
+  }
+  .mobile-bottom-bar a.nav-active { color: var(--primary); }
+  .mobile-bottom-bar a.nav-active::before {
+    content: ""; position: absolute; top: -0.35rem; width: 2rem; height: 3px; border-radius: 0 0 3px 3px; background: var(--primary);
+  }
+  .install-pwa { font-size: 0.75rem; }
+}

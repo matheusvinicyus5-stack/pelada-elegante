@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { PlayerArt } from "./player-art";
 import { profileChangeKeys } from "@/lib/statistics";
 import { rankOf, leaderIds } from "@/lib/player-changes";
+import { InstallPwaButton } from "./install-pwa";
 import fairPlayLogo from "@/assets/amigos-fair-play-logo.jpeg.asset.json";
 
 export function SiteHeader() {
@@ -57,6 +58,7 @@ export function SiteHeader() {
           </Link>
         </nav>
         <div className="header-admin">
+          <InstallPwaButton />
           {active ? (
             <details className="admin-menu">
               <summary>
@@ -83,6 +85,24 @@ export function SiteHeader() {
         </div>
       </div>
     </header>
+  );
+}
+export function MobileBottomBar() {
+  return (
+    <nav className="mobile-bottom-bar" aria-label="Navegação inferior">
+      <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "nav-active" }}>
+        <ChartNoAxesColumnIncreasing size={20} />
+        Estatísticas
+      </Link>
+      <Link to="/times" activeProps={{ className: "nav-active" }}>
+        <Users size={20} />
+        Times
+      </Link>
+      <Link to="/socios" activeProps={{ className: "nav-active" }}>
+        <Medal size={20} />
+        Sócios
+      </Link>
+    </nav>
   );
 }
 export function SiteFooter() {

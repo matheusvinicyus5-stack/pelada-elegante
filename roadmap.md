@@ -28,3 +28,4 @@
 - [x] Concluir armazenamento, renovação e limpeza do acesso da Direção.
 - [x] Corrigir nomes dos times no último confronto.
 - [x] Limpar capitães ao excluir jogadores e testar.
+- [x] Barra inferior no celular e app instalável com botão Instalar App.

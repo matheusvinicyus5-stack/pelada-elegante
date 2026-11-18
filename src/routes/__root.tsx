@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { FootballAdminProvider } from "@/components/football-admin";
-import { SiteHeader, SiteFooter } from "@/components/football";
+import { SiteHeader, SiteFooter, MobileBottomBar } from "@/components/football";
 import { FootballProvider, footballOptions } from "@/components/football-state";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -88,6 +88,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image", content: "https://amigosfairplay.lovable.app/favicon.png" },
       { property: "og:image:alt", content: "Logo Amigos Fair Play" },
       { name: "twitter:image", content: "https://amigosfairplay.lovable.app/favicon.png" },
+      { name: "theme-color", content: "#0a0a0c" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Fair Play" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -101,6 +106,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", href: "/icon-180.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -135,6 +142,7 @@ function RootComponent() {
           <Outlet />
           <Toaster />
           <SiteFooter />
+          <MobileBottomBar />
         </FootballAdminProvider>
       </FootballProvider>
     </QueryClientProvider>
