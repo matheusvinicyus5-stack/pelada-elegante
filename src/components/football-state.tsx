@@ -7,7 +7,7 @@ import { footballSchema } from '@/lib/football-schema';
 import type { Player, Match } from '@/lib/football';
 type FootballData = {players:Player[];matches:Match[]};
 
-export const footballOptions=queryOptions({queryKey:['football'],queryFn:()=>getFootball(),staleTime:0});
+export const footballOptions=queryOptions({queryKey:['football'],queryFn:()=>getFootball(),staleTime:60_000});
 type State=FootballData & {active:boolean;setActive:(active:boolean)=>void;save:(data:FootballData)=>Promise<void>};
 const FootballContext=createContext<State|null>(null);
 export function FootballProvider({children}:{children:ReactNode}){
