@@ -1,12 +1,10 @@
 import { createServerFn } from '@tanstack/react-start';
-import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 import { footballSchema } from './football-schema';
 import type { Database, Json } from '@/integrations/supabase/types';
 
 export const getFootball=createServerFn({method:'GET'}).handler(async()=>{
- const key=process.env['SUPABASE_PUBLISHABLE_KEY']!;
- const db=createClient<Database>(process.env['SUPABASE_URL']!,key,{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:(input,init)=>{const h=new Headers(init?.headers);if(key.startsWith('sb_')&&h.get('Authorization')===`Bearer ${key}`)h.delete('Authorization');h.set('apikey',key);return fetch(input,{...init,headers:h});}}});
+ const {supabaseAdmin:db}=await import('@/integrations/supabase/client.server');
  const {data,error}=await db.from('football_data').select('payload,revision').eq('id',1).single();
  if(error||!data)throw new Error('Não foi possível carregar os jogadores');
  return {...footballSchema.parse(data.payload),revision:data.revision};

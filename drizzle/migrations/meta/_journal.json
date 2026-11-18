@@ -15,6 +15,13 @@
       "when": 1793706104351,
       "tag": "0001_fix_matheus_previous",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794960641847,
+      "tag": "0002_migration",
+      "breakpoints": true
     }
   ]
 }
