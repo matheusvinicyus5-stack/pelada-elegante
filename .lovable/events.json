@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "events": {
+    "project.screen_timing": {
+      "event_schema_version": 1,
+      "description": "Measures document opening through hydration/paint or an actual tab navigation through route resolution/paint for Statistics, Teams and Members; excludes hidden-page samples.",
+      "privacy": {
+        "contains_pii": false,
+        "purpose": "product_analytics"
+      },
+      "properties_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "screen",
+          "from_screen",
+          "kind",
+          "duration_ms",
+          "device",
+          "display_mode"
+        ],
+        "properties": {
+          "screen": {
+            "type": "string",
+            "enum": [
+              "statistics",
+              "teams",
+              "members"
+            ]
+          },
+          "from_screen": {
+            "type": "string",
+            "enum": [
+              "statistics",
+              "teams",
+              "members",
+              "other",
+              "none"
+            ]
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "initial_load",
+              "tab_navigation"
+            ]
+          },
+          "duration_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "device": {
+            "type": "string",
+            "enum": [
+              "mobile",
+              "desktop"
+            ]
+          },
+          "display_mode": {
+            "type": "string",
+            "enum": [
+              "browser",
+              "standalone"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

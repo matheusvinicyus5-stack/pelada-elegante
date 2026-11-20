@@ -25,3 +25,4 @@
 - Share pure statistics helpers for accent-insensitive search, point-ranking movement and filtered BOM CSV exports, so sorting never changes historical rank comparisons.
 - Keep new player photos in a private image-only storage bucket, with Direction-verified uploads and immutable same-origin image reads; preserve existing CDN references and verified migration originals.
 - Generate player profile artwork in browser Canvas with semantic brand tokens and prepared blobs so mobile sharing keeps user activation.
+- Measure screen readiness in the shared root using router navigation/resolution events and post-paint callbacks; emit anonymous timing samples through the injected Lovable events collector, excluding preloads, same-path updates and hidden tabs so measurements represent actual visible navigation.

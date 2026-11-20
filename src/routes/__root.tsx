@@ -8,7 +8,7 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 
 import { FootballAdminProvider } from "@/components/football-admin";
 import { SiteHeader, SiteFooter, MobileBottomBar } from "@/components/football";
@@ -85,9 +85,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Futebol entre amigos. Estatísticas e times da nossa pelada." },
       { property: "og:title", content: "Amigos Fair Play 2026" },
       { property: "og:description", content: "Futebol entre amigos. Estatísticas e times da nossa pelada." },
-      { property: "og:image", content: "https://amigosfairplay.lovable.app/favicon.png" },
-      { property: "og:image:alt", content: "Logo Amigos Fair Play" },
-      { name: "twitter:image", content: "https://amigosfairplay.lovable.app/favicon.png" },
       { name: "theme-color", content: "#0a0a0c" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "mobile-web-app-capable", content: "yes" },
@@ -132,6 +129,79 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const router = useRouter();
+  const initialTimingReported = useRef(false);
+
+  useEffect(() => {
+    // Measure real navigation, not preloads, clicks on the current tab or data refreshes.
+    const screenFor = (path: string) => {
+      switch (path.replace(/\/$/, "") || "/") {
+        case "/": return "statistics";
+        case "/times": return "teams";
+        case "/socios": return "members";
+        default: return "other";
+      }
+    };
+    type Sample = { screen: string; from: string; kind: "initial_load" | "tab_navigation"; start: number };
+    let pending: Sample | undefined;
+    let frame = 0;
+    const cancel = () => {
+      cancelAnimationFrame(frame);
+      pending = undefined;
+    };
+    const afterPaint = (sample: Sample) => {
+      cancelAnimationFrame(frame);
+      // Two frames let the resolved route reach the screen before taking the sample.
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (document.visibilityState !== "visible" || pending !== sample) return;
+          pending = undefined;
+          if (sample.kind === "initial_load") {
+            if (initialTimingReported.current) return;
+            initialTimingReported.current = true;
+          }
+          try {
+            window.__lovableEvents?.track?.("project.screen_timing", {
+              screen: sample.screen,
+              from_screen: sample.from,
+              kind: sample.kind,
+              duration_ms: Math.round((performance.now() - sample.start) * 100) / 100,
+              device: window.matchMedia("(max-width: 767px)").matches ? "mobile" : "desktop",
+              display_mode: window.matchMedia("(display-mode: standalone)").matches || ("standalone" in navigator && navigator.standalone === true) ? "standalone" : "browser",
+            });
+          } catch {
+            // Optional telemetry must never interrupt football navigation.
+          }
+        });
+      });
+    };
+    const initialScreen = screenFor(router.state.location.pathname);
+    if (!initialTimingReported.current && initialScreen !== "other" && document.visibilityState === "visible") {
+      // performance.now() starts at document navigation, including the initial server/data wait.
+      pending = { screen: initialScreen, from: "none", kind: "initial_load", start: 0 };
+      afterPaint(pending);
+    }
+    const unsubscribeStart = router.subscribe("onBeforeNavigate", ({ fromLocation, toLocation, pathChanged }) => {
+      if (!pathChanged) return;
+      cancel();
+      const screen = screenFor(toLocation.pathname);
+      if (screen === "other" || document.visibilityState !== "visible") return;
+      pending = { screen, from: fromLocation ? screenFor(fromLocation.pathname) : "other", kind: "tab_navigation", start: performance.now() };
+    });
+    const unsubscribeEnd = router.subscribe("onResolved", ({ toLocation }) => {
+      if (pending?.kind === "tab_navigation" && pending.screen === screenFor(toLocation.pathname)) afterPaint(pending);
+    });
+    const onVisibility = () => {
+      if (document.visibilityState !== "visible") cancel();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      cancel();
+      unsubscribeStart();
+      unsubscribeEnd();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [router]);
 
   return (
     <QueryClientProvider client={queryClient}>

@@ -29,3 +29,4 @@
 - [x] Corrigir nomes dos times no último confronto.
 - [x] Limpar capitães ao excluir jogadores e testar.
 - [x] Barra inferior no celular e app instalável com botão Instalar App.
+- [x] Registrar e verificar tempos de abertura e troca de Estatísticas, Times e Sócios por dispositivo.
