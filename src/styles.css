@@ -2228,3 +2228,18 @@ h1 > span {
   }
   .install-pwa { font-size: 0.75rem; }
 }
+
+/* Sócios: acabamento metálico */
+.player-avatar.member-ouro { box-shadow: 0 0 0 2px var(--gold), 0 0 12px color-mix(in oklch, var(--gold) 45%, transparent); }
+.player-avatar.member-prata { box-shadow: 0 0 0 2px oklch(0.82 0.01 250), 0 0 10px oklch(0.82 0.01 250 / 0.35); }
+/* Coluna do jogador fixa no celular */
+@media (max-width: 767px) {
+  .ranking-table .rank-col { position: sticky; left: 0; z-index: 2; background: var(--card); }
+  .ranking-table td:nth-child(2), .ranking-table th:nth-child(2) { position: sticky; left: 38px; z-index: 2; background: var(--card); box-shadow: 6px 0 8px -6px oklch(0 0 0 / 0.6); }
+  .ranking-table thead th.rank-col, .ranking-table thead th:nth-child(2) { z-index: 3; }
+}
+/* Placar estilo transmissão */
+.broadcast-score .match-result-header { background: linear-gradient(90deg, oklch(0.5 0.16 255 / 0.18), transparent 40%, transparent 60%, oklch(0.55 0.2 25 / 0.18)); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+.broadcast-score .result-score { font-variant-numeric: tabular-nums; font-weight: 700; background: var(--background); border: 1px solid var(--border); border-radius: 12px; padding: 10px 0; }
+.result-captain { font-size: 13px; color: var(--gold); font-weight: 600; }
+.saturday-select { min-width: 0; max-width: 100%; height: 36px; font-weight: 600; }

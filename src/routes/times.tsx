@@ -8,6 +8,7 @@ import { useFootballAdmin } from "@/components/football-admin-context";
 import { useFootball } from "@/components/football-state";
 import { cn } from "@/lib/utils";
 import { LineupArt, MatchArt } from "@/components/match-art";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 export const Route = createFileRoute("/times")({
   head: () => ({
     meta: [
@@ -30,6 +31,7 @@ function Teams() {
   const [active, setActive] = useState(0);
   const [selected, setSelected] = useState<Player | null>(null);
   const match = matches[active] ?? matches[0];
+  const captainName = (id?: number) => (id === undefined ? undefined : players.find((p) => p.id === id)?.name);
   if (!match)
     return (
       <main className="page-width main-content">
@@ -69,7 +71,10 @@ function Teams() {
       <div className="teams-date-bar">
         <div>
           <CalendarDays size={19} />
-          <strong>Sábado, {match.date}</strong>
+          <Select value={String(active)} onValueChange={(v) => setActive(Number(v))}>
+            <SelectTrigger className="saturday-select" aria-label="Escolher sábado"><SelectValue /></SelectTrigger>
+            <SelectContent>{matches.map((m, i) => <SelectItem key={m.id} value={String(i)}>Sábado, {m.date} · Azul {m.scoreA} x {m.scoreB} Vermelho</SelectItem>)}</SelectContent>
+          </Select>
           {match.example && <span className="example-badge">CONFRONTO DE EXEMPLO</span>}
         </div>
         <div className="flex gap-2">
@@ -115,11 +120,12 @@ function Teams() {
           </Button>
         </div>
       </div>
-      <section className="match-result" aria-label="Resultado e eventos da partida">
+      <section className="match-result broadcast-score" aria-label="Resultado e eventos da partida">
         <div className="match-result-header">
         <div className="result-team">
           <ShieldBadge team="A" />
           <h2>Time Azul</h2>
+          {captainName(match?.captainA) && <span className="result-captain">Ⓒ {captainName(match?.captainA)}</span>}
         </div>
         <strong className="result-score" aria-label={`${match.scoreA} gols do Time Azul`}>{match.scoreA}</strong>
         <div className="result-status">
@@ -130,6 +136,7 @@ function Teams() {
         <div className="result-team result-team-b">
           <ShieldBadge team="B" />
           <h2>Time Vermelho</h2>
+          {captainName(match?.captainB) && <span className="result-captain">Ⓒ {captainName(match?.captainB)}</span>}
         </div>
         </div>
         <div className="result-events">

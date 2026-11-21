@@ -120,7 +120,7 @@ export function SiteFooter() {
 }
 export function PlayerAvatar({ player, large = false }: { player: Player; large?: boolean }) {
   return (
-    <span className={cn("player-avatar", large && "avatar-large", `avatar-${player.id % 4}`)}>
+    <span className={cn("player-avatar", large && "avatar-large", `avatar-${player.id % 4}`, player.membership && `member-${player.membership}`)}>
       {player.photo ? (
         <img src={player.photo} alt={player.name} loading="lazy" />
       ) : (
